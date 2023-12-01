@@ -52,6 +52,7 @@ link_directories(${EXTERN_DIR}/GLFW/lib)
 # include directories for imgui files
 include_directories(${EXTERN_DIR}/imgui)
 
+add_subdirectory(${EXTERN_DIR}/Eigen)
 add_subdirectory(${EXTERN_DIR}/bgfx.cmake)
 add_subdirectory(${EXTERN_DIR}/imgui)
 add_subdirectory(${INCLUDE_DIR}/MathAdditions)
