@@ -43,6 +43,7 @@ include_directories(${BGFX_C_DIR}/bx/3rdparty)
 include_directories(${BGFX_C_DIR}/bimg/include)
 include_directories(${BGFX_C_DIR}/bimg/3rdparty)
 
+# include directories for SDL3 and GLFW files
 include_directories(${EXTERN_DIR}/SDL3/include)
 link_directories(${EXTERN_DIR}/SDL3/lib)
 include_directories(${EXTERN_DIR}/GLFW/include)
