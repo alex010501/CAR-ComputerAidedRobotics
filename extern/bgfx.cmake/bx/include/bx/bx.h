@@ -6,8 +6,41 @@
 #ifndef BX_H_HEADER_GUARD
 #define BX_H_HEADER_GUARD
 
+#if      defined(_MSC_VER) \
+        ||defined(__WIN32__) \
+        ||defined(_WIN32)\
+        ||defined(__WIN32)\
+        ||defined(WIN32)\
+        ||defined(__WINNT)\
+        ||defined(__WINNT__)\
+        ||defined(_WINNT)\
+        ||defined(WINNT)
+/* win32 or winNT */
+	#include <malloc.h>
+#elif   defined(__linux) \
+       ||defined(__linux__)\
+       ||defined(linux)\
+       ||defined(_linux)
+/* unix, linux */
+	#include <alloca.h>
+#elif defined(__unix) \
+       ||defined(_unix) \
+       ||defined(__unix__) \
+       ||defined(unix) 
+/* unix */
+       #if      defined(__APPLE__) 
+/* unix, macos */
+	   		#include <alloca.h>
+       #elif   defined (__FreeBSD__)
+	   		#include <alloca.h>
+/* unix, freebsd */
+      #endif
+#else
+# error Cannot determine OS type
+#endif
+
 // #include <alloca.h> // alloca
-#include <malloc.h>
+// #include <malloc.h>
 #include <stdarg.h> // va_list
 #include <stdint.h> // uint32_t
 #include <stdlib.h> // size_t

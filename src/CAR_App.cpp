@@ -156,7 +156,6 @@ int windowSDL()
     // Set empty primitive on screen
     bgfx::touch(0);
 
-    unsigned int counter = 0;
     while (true)
     {
 		bgfx::touch(0);
@@ -171,8 +170,6 @@ int windowSDL()
             }
         }
         bgfx::frame();
-        counter++;
-        std::cout << counter << std::endl;
     }
     bgfx::shutdown();
     SDL_DestroyWindow(window);

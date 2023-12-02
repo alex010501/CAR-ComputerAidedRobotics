@@ -76,3 +76,8 @@ target_link_libraries(CAR_App SDL3::SDL3 GLFW3)
 
 # target windows libraries
 target_link_libraries(CAR_App -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl, -Bdynamic)
+
+add_custom_command(TARGET CAR_App POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${EXTERN_DIR}/SDL3/bin/SDL3.dll"
+        $<TARGET_FILE_DIR:CAR_App>)
