@@ -37,5 +37,7 @@ add_executable(CAR_App ${SOURCE_FILE})
 # target my libraries
 target_link_libraries(CAR_App PRIVATE RobotArmLib GUI_Core)
 
-# target windows libraries
-target_link_libraries(CAR_App PRIVATE -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl, -Bdynamic)
+# target Windows libraries
+if (WIN32)
+    target_link_libraries(CAR_App PRIVATE -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl, -Bdynamic)
+endif (WIN32)
