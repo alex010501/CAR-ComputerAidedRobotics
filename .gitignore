@@ -1,3 +1,3 @@
 .vscode/
 build/
-extern/bgfx.cmake/cmake-build/cmake/bgfx/
+include/GUI_Core/extern/bgfx.cmake/cmake-build/
