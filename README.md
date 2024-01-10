@@ -18,6 +18,6 @@ The main target of
 ```bash
 git clone https://github.com/alex010501/CAR-ComputerAidedRobotics.git
 cd CAR-ComputerAidedRobotics
-cmake -S. -Bcmake-build # $CMakeOptions
-cmake --build cmake-build
+cmake -S. -Bbuild # $CMakeOptions
+cmake --build build
 ```
