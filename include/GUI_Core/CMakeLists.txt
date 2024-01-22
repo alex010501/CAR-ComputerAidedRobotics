@@ -12,7 +12,7 @@ set(GUI_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/GUI_Core.cpp
     # ${CMAKE_CURRENT_SOURCE_DIR}/include/GUI_Core.h
     # ${GUI_Core_SOURCE_DIR}/src/2D/BaseFigure.cpp
-    # ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow.cpp
+    ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow.cpp
     # ${GUI_Core_SOURCE_DIR}/src/3D/BaseObject.cpp
     # ${GUI_Core_SOURCE_DIR}/src/3D/RenderWindow.cpp
 )

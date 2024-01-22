@@ -58,3 +58,12 @@ int windowGLFW()
 
 	return 0;
 }
+
+void initGUI()
+{
+    GUIWindow window("test", 1280, 720);
+
+    window.update();
+
+    window.shutdown();
+}

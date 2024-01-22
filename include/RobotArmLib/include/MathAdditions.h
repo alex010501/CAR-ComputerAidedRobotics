@@ -12,23 +12,23 @@ namespace MathAdditions
     template <typename X>
     using errorFunc = Eigen::VectorXd (*)(X a, X b);
 
-    double DegToRad(double deg);
+    double DegToRad(double p_deg);
 
-    double RadToDeg(double rad);
+    double RadToDeg(double p_rad);
 
-    double projVector(Eigen::Vector3d a, Eigen::Vector3d b);
+    double projVector(Eigen::Vector3d p_a, Eigen::Vector3d p_b);
 
-    double getAngleAroundAxis(Eigen::Vector3d a, Eigen::Vector3d b, Eigen::Vector3d Axis);
+    double getAngleAroundAxis(Eigen::Vector3d p_a, Eigen::Vector3d p_b, Eigen::Vector3d p_Axis);
 
-    double getAngle(Eigen::Vector3d a, Eigen::Vector3d b);
+    double getAngle(Eigen::Vector3d p_a, Eigen::Vector3d p_b);
 
-    Eigen::Matrix3d Rx(double angle);
+    Eigen::Matrix3d Rx(double p_angle);
 
-    Eigen::Matrix3d Ry(double angle);
+    Eigen::Matrix3d Ry(double p_angle);
 
-    Eigen::Matrix3d Rz(double angle);
+    Eigen::Matrix3d Rz(double p_angle);
 
-    Eigen::Matrix3d R(double x, double y, double z);
+    Eigen::Matrix3d R(double p_x, double p_y, double p_z);
 
     template <typename T>
     Eigen::MatrixXd calcJacobian(forwardFunc<T> forwFunc, errorFunc<T> errFunc, Eigen::VectorXd x_init, int num_DOF, double eps = 1e-6);

@@ -20,4 +20,11 @@
 #include <bgfx/platform.h>
 #include <bx/uint32_t.h>
 
+#include <2D/UIWindow.h>
+
 int windowGLFW();
+
+void initGUI();
+void shutdownGUI();
+void updateGUI();
+void renderGUI();

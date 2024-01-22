@@ -7,27 +7,29 @@
 class RobotArm
 {
 private:
-	bool isInitialized = false;
+	bool m_isInitialized = false;
 
-	RobotLink LinkZero;
-	std::vector<RobotLink> links;
-	std::vector<RobotJoint> joints;
-	std::vector<DirectPoint> DHPoints;
-	std::vector<DHParams> LinkJointParams;
+	RobotLink m_LinkZero;
+	std::vector<RobotLink> m_links;
+	std::vector<RobotJoint> m_joints;
+	std::vector<DirectPoint> m_DHPoints;
+	std::vector<DHParams> m_LinkJointParams;
+
+	Offset m_originPosition;
 
 	void CalcDHPoints();
 	void PointsToParams();
-	Offset CalcLinkFullOffset(int index);
+	Offset CalcLinkFullOffset(int p_index);
 
 public:
-	Offset originPosition;
-
 	RobotArm() = default;
-	RobotArm(Offset originPoint, Offset	endLinkZero, Axes AxisLinkZero);
+	RobotArm(Offset p_originPoint, Offset p_endLinkZero, Axes p_AxisLinkZero);
 
-	void AddLink(Offset endLink, Axes AxisLink, MoveType jointType);
+	void AddLink(Offset p_endLink, Axes p_AxisLink, MoveType p_jointType, double p_boundUpper, double p_boundLower);
 
 	void initialize();
+
+	Offset getOriginPosition();
 
 	Eigen::VectorXd getJointAngles();
 

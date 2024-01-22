@@ -7,12 +7,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(GUI_EXTERN_DIR ${GUI_Core_SOURCE_DIR}/extern)
 
 set(IMGUI_SOURCES
-    imgui.cpp
+    imconfig.h
     imgui_demo.cpp
     imgui_draw.cpp
+    imgui_internal.h
+    imgui_tables.cpp
     imgui_widgets.cpp
-    imgui_impl_bgfx.cpp
-    imgui_impl_glfw.cpp
+    imgui.cpp
+    imgui.h
+    imstb_rectpack.h
+    imstb_textedit.h
+    imstb_truetype.h
+    backends/imgui_impl_bgfx.cpp
+    backends/imgui_impl_bgfx.h
+    backends/imgui_impl_glfw.cpp
+    backends/imgui_impl_glfw.h
 )
 
 include_directories(${GUI_EXTERN_DIR}/GLFW/include)
@@ -26,4 +35,4 @@ include_directories(${GUI_EXTERN_DIR}/bgfx.cmake/bimg/3rdparty)
 
 add_library(IMGUI ${IMGUI_SOURCES})
 
-target_link_libraries(IMGUI INTERFACE glfw)
+target_link_libraries(IMGUI INTERFACE bgfx glfw)

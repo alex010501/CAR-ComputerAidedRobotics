@@ -4,168 +4,168 @@
 /**
  * Converts degrees to radians.
  *
- * @param deg the value in degrees to be converted
+ * @param p_deg the value in degrees to be converted
  *
  * @return the value in radians
  */
-double MathAdditions::DegToRad(double deg)
+double MathAdditions::DegToRad(double p_deg)
 {
-    return deg * PI / 180.0;
+    return p_deg * PI / 180.0;
 }
 
 /**
  * Converts radians to degrees.
  *
- * @param rad the value in radians to be converted
+ * @param p_rad the value in radians to be converted
  *
  * @return the value in degrees
  */
-double MathAdditions::RadToDeg(double rad)
+double MathAdditions::RadToDeg(double p_rad)
 {
-    return rad * 180.0 / PI;
+    return p_rad * 180.0 / PI;
 }
 
 /**
  * Calculates the projection of vector `a` onto vector `b`.
  *
- * @param a The first vector.
- * @param b The second vector.
+ * @param p_a The first vector.
+ * @param p_b The second vector.
  *
  * @return The projection of vector `a` onto vector `b`.
  * 
  * @throws std::invalid_argument if the second vector is null.
  */
-double MathAdditions::projVector(Eigen::Vector3d a, Eigen::Vector3d b)
+double MathAdditions::projVector(Eigen::Vector3d p_a, Eigen::Vector3d p_b)
 {
-    if (b.norm() == 0)
+    if (p_b.norm() == 0)
     {
         throw std::invalid_argument("Vector b must not be null");
     }
-    return a.dot(b) / b.norm();
+    return p_a.dot(p_b) / p_b.norm();
 }
 
 /**
  * Calculates the angle between two vectors around a given axis.
  *
- * @param a The first vector.
- * @param b The second vector.
- * @param Axis The axis around which the angle is calculated.
+ * @param p_a The first vector.
+ * @param p_b The second vector.
+ * @param p_Axis The axis around which the angle is calculated.
  *
  * @return The angle between the vectors in radians with direction of rotation.
  *
  * @throws std::invalid_argument if either of the vectors is null or one of the vectors is parallel to the axis.
  */
-double MathAdditions::getAngleAroundAxis(Eigen::Vector3d a, Eigen::Vector3d b, Eigen::Vector3d Axis)
+double MathAdditions::getAngleAroundAxis(Eigen::Vector3d p_a, Eigen::Vector3d p_b, Eigen::Vector3d p_Axis)
 {
-    if (Axis.norm() == 0)
+    if (p_Axis.norm() == 0)
         throw std::invalid_argument("Axis must not be null");
     
-    Axis.normalize();
-    a = a - MathAdditions::projVector(a, Axis) * Axis;
-    b = b - MathAdditions::projVector(b, Axis) * Axis;
-    Eigen::Vector3d c = a.cross(b);
-    if (a.norm() == 0 || b.norm() == 0)
+    p_Axis.normalize();
+    p_a = p_a - MathAdditions::projVector(p_a, p_Axis) * p_Axis;
+    p_b = p_b - MathAdditions::projVector(p_b, p_Axis) * p_Axis;
+    Eigen::Vector3d lv_c = p_a.cross(p_b);
+    if (p_a.norm() == 0 || p_b.norm() == 0)
         throw std::invalid_argument("Vectors must not be parallel to axis");
-    else if (a.norm()*b.norm() == a.dot(b))
+    else if (p_a.norm()*p_b.norm() == p_a.dot(p_b))
         return 0;
-    else if (a.norm()*b.norm() == -a.dot(b))
+    else if (p_a.norm()*p_b.norm() == -p_a.dot(p_b))
         return PI;
-    else if (MathAdditions::projVector(a, b) == 0)
-        if (MathAdditions::projVector(c, Axis) > 0)
+    else if (MathAdditions::projVector(p_a, p_b) == 0)
+        if (MathAdditions::projVector(lv_c, p_Axis) > 0)
             return PI/2;
         else
             return -PI/2;
     else
-        if (MathAdditions::projVector(c, Axis) > 0)
-            return acos(a.dot(b) / (a.norm() * b.norm()));
+        if (MathAdditions::projVector(lv_c, p_Axis) > 0)
+            return acos(p_a.dot(p_b) / (p_a.norm() * p_b.norm()));
         else
-            return -acos(a.dot(b) / (a.norm() * b.norm()));
+            return -acos(p_a.dot(p_b) / (p_a.norm() * p_b.norm()));
 }
 
 /**
  * Calculates the angle between two vectors around a given axis.
  *
- * @param a The first vector.
- * @param b The second vector.
+ * @param p_a The first vector.
+ * @param p_b The second vector.
  *
  * @return The angle between the vectors in radians.
  *
  * @throws std::invalid_argument if either of the vectors is null.
  */
-double MathAdditions::getAngle(Eigen::Vector3d a, Eigen::Vector3d b)
+double MathAdditions::getAngle(Eigen::Vector3d p_a, Eigen::Vector3d p_b)
 {
-    if (a.norm() == 0 || b.norm() == 0)
+    if (p_a.norm() == 0 || p_b.norm() == 0)
         throw std::invalid_argument("Vectors must not be null"); 
-    else if (a.norm()*b.norm() == a.dot(b))
+    else if (p_a.norm()*p_b.norm() == p_a.dot(p_b))
         return 0;
-    else if (a.norm()*b.norm() == -a.dot(b))
+    else if (p_a.norm()*p_b.norm() == -p_a.dot(p_b))
         return PI;
-    else if (MathAdditions::projVector(a, b) == 0)
+    else if (MathAdditions::projVector(p_a, p_b) == 0)
         return PI/2;
     else
-        return acos(a.dot(b) / (a.norm() * b.norm()));
+        return acos(p_a.dot(p_b) / (p_a.norm() * p_b.norm()));
 }
 
 /**
  * Generates a 3x3 rotation matrix around the x-axis
  *
- * @param angle The angle of rotation in radians
+ * @param p_angle The angle of rotation in radians
  *
  * @return The rotation matrix
  */
-Eigen::Matrix3d MathAdditions::Rx(double angle)
+Eigen::Matrix3d MathAdditions::Rx(double p_angle)
 {
-    Eigen::Matrix3d Rx;
-    Rx << 1,          0,           0,
-          0, cos(angle), -sin(angle),
-          0, sin(angle),  cos(angle);
-    return Rx;
+    Eigen::Matrix3d lv_Rx;
+    lv_Rx << 1,            0,             0,
+             0, cos(p_angle), -sin(p_angle),
+             0, sin(p_angle),  cos(p_angle);
+    return lv_Rx;
 }
 
 /**
  * Generates a 3x3 rotation matrix around the y-axis
  *
- * @param angle The angle of rotation in radians
+ * @param p_angle The angle of rotation in radians
  *
  * @return The rotation matrix.
  */
-Eigen::Matrix3d MathAdditions::Ry(double angle)
+Eigen::Matrix3d MathAdditions::Ry(double p_angle)
 {
-    Eigen::Matrix3d Ry;
-    Ry << cos(angle), 0, sin(angle),
-                   0, 1,          0,
-         -sin(angle), 0, cos(angle);
-    return Ry;
+    Eigen::Matrix3d lv_Ry;
+    lv_Ry << cos(p_angle), 0, sin(p_angle),
+                        0, 1,            0,
+            -sin(p_angle), 0, cos(p_angle);
+    return lv_Ry;
 }
 
 /**
  * Generates a 3x3 rotation matrix around the z-axis
  *
- * @param angle The angle of rotation in radians
+ * @param p_angle The angle of rotation in radians
  *
  * @return The rotation matrix
  */
-Eigen::Matrix3d MathAdditions::Rz(double angle)
+Eigen::Matrix3d MathAdditions::Rz(double p_angle)
 {
-    Eigen::Matrix3d Rz;
-    Rz << cos(angle), -sin(angle), 0,
-          sin(angle),  cos(angle), 0,
-                   0,           0, 1;
-    return Rz;
+    Eigen::Matrix3d lv_Rz;
+    lv_Rz << cos(p_angle), -sin(p_angle), 0,
+             sin(p_angle),  cos(p_angle), 0,
+                        0,             0, 1;
+    return lv_Rz;
 }
 
 /**
  * Calculates the rotation matrix R(x, y, z) based on the given Euler angles.
  *
- * @param x The angle in radians around the x-axis.
- * @param y The angle in radians around the y-axis.
- * @param z The angle in radians around the z-axis.
+ * @param p_x The angle in radians around the x-axis.
+ * @param p_y The angle in radians around the y-axis.
+ * @param p_z The angle in radians around the z-axis.
  *
  * @return The 3x3 rotation matrix R(x, y, z)
  */
-Eigen::Matrix3d MathAdditions::R(double x, double y, double z)
+Eigen::Matrix3d MathAdditions::R(double p_x, double p_y, double p_z)
 {
-    return Rx(x) * Ry(y) * Rz(z);
+    return Rx(p_x) * Ry(p_y) * Rz(p_z);
 }
 
 /**

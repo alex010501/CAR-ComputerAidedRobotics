@@ -37,6 +37,12 @@ struct DHParams //D-H params structure for robot arm calculation
 	double d;
 };
 
+struct Bounds
+{
+	double min;
+	double max;	
+};
+
 namespace RobotAdditions
 {
 	Eigen::Matrix4d CalcTransposeMatrix(DHParams params, double jointValue, MoveType jointType);
