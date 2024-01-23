@@ -1,16 +1,11 @@
 #include "GUI_Core.h"
 
-CoreWindow::CoreWindow(const char *p_title, GLFWimage* p_icon, int p_width, int p_height): m_title(p_title)
+CoreWindow::CoreWindow(const char *p_title, GLFWimage* p_icon, std::vector<UIWindow*> p_childWindows, int p_width, int p_height): m_title(p_title)
 {
-    this->m_fullscreen = false;
     this->m_icon = p_icon;
     this->m_width = p_width;
     this->m_height = p_height;
-}
-
-void CoreWindow::setFullscreen(bool p_fullscreenSwitch)
-{
-    this->m_fullscreen = p_fullscreenSwitch;
+    this->m_childWindows = p_childWindows;
 }
 
 void CoreWindow::init()
@@ -27,33 +22,13 @@ void CoreWindow::init()
     // glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
     glfwWindowHint(GLFW_FOCUS_ON_SHOW, GLFW_TRUE);
     // glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-
+   
     // Create GLFW window
-    if (this->m_fullscreen)
-    {
-        GLFWmonitor * lv_monitor = glfwGetPrimaryMonitor();
-        const GLFWvidmode * lv_mode = glfwGetVideoMode(lv_monitor);
-        this->m_width = lv_mode->width;
-        this->m_height = lv_mode->height;
-        this->m_window = glfwCreateWindow(lv_mode->width, lv_mode->height, this->m_title, lv_monitor, NULL);
-    }
-    else if ((this->m_width == -1) || (this->m_height == -1))
-    {
-        GLFWmonitor * lv_monitor = glfwGetPrimaryMonitor();
-        glfwGetMonitorWorkarea(lv_monitor, NULL, NULL, &this->m_width, &this->m_height);
-        // const GLFWvidmode * lv_mode = glfwGetVideoMode(lv_monitor);
-        // this->m_width = lv_mode->width;
-        // this->m_height = lv_mode->height;
-        this->m_window = glfwCreateWindow(this->m_width, this->m_height, this->m_title, NULL, NULL);
-    }
-    else
-    {
-        this->m_window = glfwCreateWindow(this->m_width, this->m_height, this->m_title, NULL, NULL);
-        // glfwSetWindowSizeLimits(this->m_window, 1280, 720, GLFW_DONT_CARE, GLFW_DONT_CARE);
+    this->m_window = glfwCreateWindow(this->m_width, this->m_height, this->m_title, NULL, NULL);
+    glfwSetWindowSizeLimits(this->m_window, 640, 360, GLFW_DONT_CARE, GLFW_DONT_CARE);
         // glfwSetWindowAspectRatio(this->m_window, 16, 9);
         // glfwMaximizeWindow(this->m_window);
         // glfwFocusWindow(this->m_window);
-    }
 
     if (!this->m_window)
     {
@@ -65,6 +40,17 @@ void CoreWindow::init()
     // Set Icon
     glfwSetWindowIcon(this->m_window, 1, this->m_icon);
 
+    // Set GLFW window user pointer
+    // CoreWindow* myWindow = this;
+    glfwSetWindowUserPointer(this->m_window, this);
+
+    // Set GLFW callbacks
+    auto CoreWindowResizeCallback = [](GLFWwindow* p_window, int p_width, int p_height)
+    {
+        static_cast<CoreWindow*>(glfwGetWindowUserPointer(p_window))->ResizeCallback(p_width, p_height);
+    };
+
+    glfwSetWindowSizeCallback(this->m_window, CoreWindowResizeCallback);
 
     // Initialize BGFX
     bgfx::PlatformData lv_pd;
@@ -115,16 +101,19 @@ void CoreWindow::init()
     ImGui_Implbgfx_Init(0);
 }
 
+void CoreWindow::ResizeCallback(int p_width, int p_height)
+{
+    this->m_width = p_width;
+    this->m_height = p_height;
+    bgfx::reset(this->m_width, this->m_height, BGFX_RESET_VSYNC);
+    this->update();
+}
+
 void CoreWindow::update()
 {
     char * lv_buf = new char[256];
     float lv_f;
-    // bgfx::renderFrame();
-    // while (!glfwWindowShouldClose(this->m_window))
-    // {
-    // Poll for and process events
-    glfwPollEvents();
-
+    
     // Start the ImGui frame
     ImGui_Implbgfx_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -132,8 +121,17 @@ void CoreWindow::update()
 
     // Create ImGui GUI here
 
+    // ImGuiViewport* viewport = ImGui::GetMainViewport();
+    // ImGui::SetNextWindowSize(ImVec2(viewport->Size.x * 0.20f, viewport->Size.y));
+    // ImGui::SetNextWindowPos(viewport->Pos);
+
     ImGui::DockSpaceOverViewport(NULL, ImGuiDockNodeFlags_PassthruCentralNode);
-    ImGui::Begin("Dockable Window");
+
+    for (UIWindow* window : this->m_childWindows)
+    {
+        window->draw();
+    }
+    /*ImGui::Begin("Dockable Window");//, nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
     ImGui::Text("Hello, world %d", 123);
     if (ImGui::Button("Save"))
@@ -142,7 +140,7 @@ void CoreWindow::update()
     }
     ImGui::InputText("string", lv_buf, 256);
     ImGui::SliderFloat("float", &lv_f, 0.0f, 1.0f);
-    ImGui::End();
+    ImGui::End();*/
 
     // Render ImGui
     ImGui::Render();
@@ -152,47 +150,11 @@ void CoreWindow::update()
 
     bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x002137FF, 0.5f, 0);
     bgfx::setViewRect(0, 0, 0, this->m_width, this->m_height);
-    // if (this->m_fullscreen)
-    // {
-    //     int lv_display_w, lv_display_h;
-    //     glfwGetFramebufferSize(this->m_window, &lv_display_w, &lv_display_h);
-    //     bgfx::setViewRect(0, 0, 0, lv_display_w, lv_display_h);
-    // }
-    // else
-    // {
-    //     int lv_w_width, lv_w_height;
-    //     glfwGetWindowSize(this->m_window, &lv_w_width, &lv_w_height);
-    //     this->m_width = lv_w_width;
-    //     this->m_height = lv_w_height;
-    //     bgfx::setViewRect(0, 0, 0, this->m_width, this->m_height);
-    // }
-
-    // bgfx::touch(0);
     ImGui_Implbgfx_RenderDrawLists(ImGui::GetDrawData());
 
     // Present the frame
     bgfx::frame();
     glfwSwapBuffers(this->m_window);
-    // bgfx::reset(this->m_width , this->m_width, BGFX_RESET_VSYNC);
-
-    // }
-
-
-    /*glfwSetWindowSizeCallback(this->m_window, [](GLFWwindow* window, int width, int height)
-    {
-        GLFWmonitor * lv_monitor =  glfwGetWindowMonitor(window);
-        const GLFWvidmode * lv_mode = glfwGetVideoMode(lv_monitor);
-        float lv_monitor_width = static_cast<float>(lv_mode->width);
-        CoreWindow* coreWindow = static_cast<CoreWindow*>(glfwGetWindowUserPointer(window));
-        if (coreWindow)
-        {
-            coreWindow->m_width = width;
-            coreWindow->m_height = height;
-            // Additional resizing logic if needed
-            float lv_scaleFactor = static_cast<float>(width) / lv_monitor_width;
-            ImGui::GetStyle().ScaleAllSizes(lv_scaleFactor);
-        }
-    });*/
 
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }

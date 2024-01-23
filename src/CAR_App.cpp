@@ -9,18 +9,14 @@
 
 int main()
 {
+    std::vector<UIWindow*> windowList;
+
+    Viewer3DWindow window1("Computer Aided Robotics");
+    Viewer3DWindow window2("CAR");
+    windowList.push_back(&window1);
+    windowList.push_back(&window2);
+
     std::cout << "Welcome to Computer Aided Robotics" << std::endl;
-    std::cout << "Choose screen mode: 1 = fullscreen, 0 = windowed" << std::endl;
-    int mode;
-    do
-    {
-        std::cin >> mode;
-        getchar();
-        if (mode != 0 && mode != 1)
-        {
-            std::cout << "Invalid mode, please enter 0 or 1" << std::endl;
-        }
-    } while (mode != 0 && mode != 1);
     
     int width, height, channels;
     unsigned char* iconData = stbi_load("resources/RA_Icon.png", &width, &height, &channels, 0);
@@ -29,12 +25,7 @@ int main()
     icon[0].height = height;
     icon[0].pixels = iconData;
 
-    CoreWindow testWindow("Computer Aided Robotics", icon);
-
-    if (mode)
-    {
-        testWindow.setFullscreen(true);
-    }
+    CoreWindow testWindow("Computer Aided Robotics", icon, windowList);
 
     std::cout << "Starting application" << std::endl;
     std::cout << "Press enter to continue" << std::endl;
@@ -43,6 +34,8 @@ int main()
     testWindow.init();
     while (!glfwWindowShouldClose(testWindow.getWindow()))
     {
+        // Poll for and process events
+        glfwPollEvents();
         testWindow.update();
     }
     testWindow.shutdown();

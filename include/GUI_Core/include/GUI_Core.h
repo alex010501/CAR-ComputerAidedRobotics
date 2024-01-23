@@ -13,6 +13,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <vector>
 
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
@@ -22,17 +23,19 @@
 
 #include <2D/UIWindow.h>
 
+
+
 class CoreWindow {
 private:
     GLFWwindow* m_window;
     GLFWimage* m_icon;
     int m_width;
     int m_height;
-    bool m_fullscreen;
     const char* m_title;
+    std::vector<UIWindow*> m_childWindows;
 
 public:
-    CoreWindow(const char* p_title, GLFWimage* p_icon = NULL, int p_width = -1, int p_height = -1);
+    CoreWindow(const char* p_title, GLFWimage* p_icon = NULL, std::vector<UIWindow*> p_childWindows = {}, int p_width = 1280, int p_height = 720);
 
     void init();
 
@@ -40,7 +43,7 @@ public:
 
     void shutdown();
 
-    void setFullscreen(bool p_fullscreenSwitch);
+    void ResizeCallback(int p_width, int p_height);
 
     GLFWwindow* getWindow();
 };
