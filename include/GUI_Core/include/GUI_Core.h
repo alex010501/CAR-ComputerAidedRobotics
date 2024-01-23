@@ -32,13 +32,15 @@ private:
     const char* m_title;
 
 public:
-    CoreWindow(const char* p_title, int p_width, int p_height, bool p_fullscreenSwitch = false, GLFWimage* p_icon = NULL);
+    CoreWindow(const char* p_title, GLFWimage* p_icon = NULL, int p_width = -1, int p_height = -1);
 
     void init();
 
     void update();
 
     void shutdown();
+
+    void setFullscreen(bool p_fullscreenSwitch);
 
     GLFWwindow* getWindow();
 };

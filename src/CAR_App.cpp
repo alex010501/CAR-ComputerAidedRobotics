@@ -9,19 +9,42 @@
 
 int main()
 {
-    std::cout << "Using GLFW" << std::endl;
-
+    std::cout << "Welcome to Computer Aided Robotics" << std::endl;
+    std::cout << "Choose screen mode: 1 = fullscreen, 0 = windowed" << std::endl;
+    int mode;
+    do
+    {
+        std::cin >> mode;
+        getchar();
+        if (mode != 0 && mode != 1)
+        {
+            std::cout << "Invalid mode, please enter 0 or 1" << std::endl;
+        }
+    } while (mode != 0 && mode != 1);
+    
     int width, height, channels;
     unsigned char* iconData = stbi_load("resources/RA_Icon.png", &width, &height, &channels, 0);
     GLFWimage icon[1];
     icon[0].width = width;
     icon[0].height = height;
     icon[0].pixels = iconData;
-	// return windowGLFW();
-    // CoreWindow testWindow("Computer Aided Robotics", 1920, 990, true);
-    CoreWindow testWindow("Computer Aided Robotics", 1920, 990, false, icon);
+
+    CoreWindow testWindow("Computer Aided Robotics", icon);
+
+    if (mode)
+    {
+        testWindow.setFullscreen(true);
+    }
+
+    std::cout << "Starting application" << std::endl;
+    std::cout << "Press enter to continue" << std::endl;
+    getchar();
+
     testWindow.init();
-    testWindow.update();
+    while (!glfwWindowShouldClose(testWindow.getWindow()))
+    {
+        testWindow.update();
+    }
     testWindow.shutdown();
     // std::cout << "Rate application by 1 to 10" << std::endl;
     // getchar();

@@ -1,11 +1,16 @@
 #include "GUI_Core.h"
 
-CoreWindow::CoreWindow(const char *p_title, int p_width, int p_height, bool p_fullscreenSwitch, GLFWimage* p_icon): m_title(p_title)
+CoreWindow::CoreWindow(const char *p_title, GLFWimage* p_icon, int p_width, int p_height): m_title(p_title)
 {
-    this->m_fullscreen = p_fullscreenSwitch;
+    this->m_fullscreen = false;
     this->m_icon = p_icon;
     this->m_width = p_width;
     this->m_height = p_height;
+}
+
+void CoreWindow::setFullscreen(bool p_fullscreenSwitch)
+{
+    this->m_fullscreen = p_fullscreenSwitch;
 }
 
 void CoreWindow::init()
@@ -19,19 +24,35 @@ void CoreWindow::init()
 
     // Configure GLFW window hints
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    // glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+    glfwWindowHint(GLFW_FOCUS_ON_SHOW, GLFW_TRUE);
+    // glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
     // Create GLFW window
     if (this->m_fullscreen)
     {
         GLFWmonitor * lv_monitor = glfwGetPrimaryMonitor();
         const GLFWvidmode * lv_mode = glfwGetVideoMode(lv_monitor);
+        this->m_width = lv_mode->width;
+        this->m_height = lv_mode->height;
         this->m_window = glfwCreateWindow(lv_mode->width, lv_mode->height, this->m_title, lv_monitor, NULL);
+    }
+    else if ((this->m_width == -1) || (this->m_height == -1))
+    {
+        GLFWmonitor * lv_monitor = glfwGetPrimaryMonitor();
+        glfwGetMonitorWorkarea(lv_monitor, NULL, NULL, &this->m_width, &this->m_height);
+        // const GLFWvidmode * lv_mode = glfwGetVideoMode(lv_monitor);
+        // this->m_width = lv_mode->width;
+        // this->m_height = lv_mode->height;
+        this->m_window = glfwCreateWindow(this->m_width, this->m_height, this->m_title, NULL, NULL);
     }
     else
     {
         this->m_window = glfwCreateWindow(this->m_width, this->m_height, this->m_title, NULL, NULL);
-        glfwSetWindowSizeLimits(this->m_window, 640, 360, GLFW_DONT_CARE, GLFW_DONT_CARE);
-        glfwMaximizeWindow(this->m_window);
+        // glfwSetWindowSizeLimits(this->m_window, 1280, 720, GLFW_DONT_CARE, GLFW_DONT_CARE);
+        // glfwSetWindowAspectRatio(this->m_window, 16, 9);
+        // glfwMaximizeWindow(this->m_window);
+        // glfwFocusWindow(this->m_window);
     }
 
     if (!this->m_window)
@@ -97,52 +118,83 @@ void CoreWindow::init()
 void CoreWindow::update()
 {
     char * lv_buf = new char[256];
-    float lv_f; 
-	// bgfx::renderFrame();
-    while (!glfwWindowShouldClose(this->m_window))
+    float lv_f;
+    // bgfx::renderFrame();
+    // while (!glfwWindowShouldClose(this->m_window))
+    // {
+    // Poll for and process events
+    glfwPollEvents();
+
+    // Start the ImGui frame
+    ImGui_Implbgfx_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    // Create ImGui GUI here
+
+    ImGui::DockSpaceOverViewport(NULL, ImGuiDockNodeFlags_PassthruCentralNode);
+    ImGui::Begin("Dockable Window");
+
+    ImGui::Text("Hello, world %d", 123);
+    if (ImGui::Button("Save"))
     {
-        // Clear the screen
-        bgfx::touch(0);
-
-        bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x002137FF, 0.5f, 0);
-        bgfx::setViewRect(0, 0, 0, this->m_width, this->m_height);
-
-        // Poll for and process events
-        glfwPollEvents();
-
-        // Start the ImGui frame
-        ImGui_Implbgfx_NewFrame();
-        ImGui_ImplGlfw_NewFrame();        
-        ImGui::NewFrame();
-
-        // Create ImGui GUI here
-
-        ImGui::DockSpaceOverViewport(NULL, ImGuiDockNodeFlags_PassthruCentralNode);
-        ImGui::Begin("Dockable Window");
-
-        ImGui::Text("Hello, world %d", 123);
-        if (ImGui::Button("Save"))
-        {
-            // Do something
-        }
-        ImGui::InputText("string", lv_buf, 256);
-        ImGui::SliderFloat("float", &lv_f, 0.0f, 1.0f);
-        ImGui::End();
-
-        // Render ImGui
-        ImGui::Render();
-        int lv_display_w, lv_display_h;
-        glfwGetFramebufferSize(this->m_window, &lv_display_w, &lv_display_h);
-        bgfx::setViewRect(0, 0, 0, lv_display_w, lv_display_h);
-        bgfx::touch(0);
-        ImGui_Implbgfx_RenderDrawLists(ImGui::GetDrawData());
-
-        // Present the frame
-        bgfx::frame();
-        glfwSwapBuffers(this->m_window);
-        std::this_thread::sleep_for(std::chrono::milliseconds(16));
+        // Do something
     }
+    ImGui::InputText("string", lv_buf, 256);
+    ImGui::SliderFloat("float", &lv_f, 0.0f, 1.0f);
+    ImGui::End();
 
+    // Render ImGui
+    ImGui::Render();
+
+    // Clear the screen
+    bgfx::touch(0);
+
+    bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x002137FF, 0.5f, 0);
+    bgfx::setViewRect(0, 0, 0, this->m_width, this->m_height);
+    // if (this->m_fullscreen)
+    // {
+    //     int lv_display_w, lv_display_h;
+    //     glfwGetFramebufferSize(this->m_window, &lv_display_w, &lv_display_h);
+    //     bgfx::setViewRect(0, 0, 0, lv_display_w, lv_display_h);
+    // }
+    // else
+    // {
+    //     int lv_w_width, lv_w_height;
+    //     glfwGetWindowSize(this->m_window, &lv_w_width, &lv_w_height);
+    //     this->m_width = lv_w_width;
+    //     this->m_height = lv_w_height;
+    //     bgfx::setViewRect(0, 0, 0, this->m_width, this->m_height);
+    // }
+
+    // bgfx::touch(0);
+    ImGui_Implbgfx_RenderDrawLists(ImGui::GetDrawData());
+
+    // Present the frame
+    bgfx::frame();
+    glfwSwapBuffers(this->m_window);
+    // bgfx::reset(this->m_width , this->m_width, BGFX_RESET_VSYNC);
+
+    // }
+
+
+    /*glfwSetWindowSizeCallback(this->m_window, [](GLFWwindow* window, int width, int height)
+    {
+        GLFWmonitor * lv_monitor =  glfwGetWindowMonitor(window);
+        const GLFWvidmode * lv_mode = glfwGetVideoMode(lv_monitor);
+        float lv_monitor_width = static_cast<float>(lv_mode->width);
+        CoreWindow* coreWindow = static_cast<CoreWindow*>(glfwGetWindowUserPointer(window));
+        if (coreWindow)
+        {
+            coreWindow->m_width = width;
+            coreWindow->m_height = height;
+            // Additional resizing logic if needed
+            float lv_scaleFactor = static_cast<float>(width) / lv_monitor_width;
+            ImGui::GetStyle().ScaleAllSizes(lv_scaleFactor);
+        }
+    });*/
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 
 void CoreWindow::shutdown()
