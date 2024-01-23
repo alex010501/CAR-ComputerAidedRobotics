@@ -11,12 +11,12 @@
 #endif
 
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 #include <imgui.h>
-// #include <imgui_impl_sdl.h>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_bgfx.h>
-// #include <SDL.h>
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
 #include <bgfx/bgfx.h>
@@ -26,33 +26,6 @@
 
 class GUIWindow {
 private:
-    GLFWwindow* m_window;
-    int m_width;
-    int m_height;
-    bool m_fullscreen;
-    const char* m_title;
 
 public:
-    GUIWindow(const char* p_title, int p_width, int p_height, bool p_fullscreenSwitch = false);
-
-    void update();
-
-    GLFWwindow* getWindow();
-
-    void shutdown();
-
-    void addChildWindow(GUIWindow& childWindow);
 };
-
-// class UI_Window {
-// public:
-//     UI_Window(const char* title) : m_title(title) {}
-
-//     void render();
-
-//     bool IsOpen() const { return m_open; }
-
-// private:
-//     const char* m_title;
-//     bool m_open = true;
-// };

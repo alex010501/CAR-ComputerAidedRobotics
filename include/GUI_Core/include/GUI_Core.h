@@ -1,8 +1,5 @@
 #pragma once
 
-#define WNDW_WIDTH 800//1600
-#define WNDW_HEIGHT 450//900
-
 #define GLFW_INCLUDE_NONE
 
 #if defined(_WIN32)
@@ -14,6 +11,9 @@
 #endif
 
 #include <iostream>
+#include <chrono>
+#include <thread>
+
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
 #include <bgfx/bgfx.h>
@@ -22,9 +22,23 @@
 
 #include <2D/UIWindow.h>
 
-int windowGLFW();
+class CoreWindow {
+private:
+    GLFWwindow* m_window;
+    GLFWimage* m_icon;
+    int m_width;
+    int m_height;
+    bool m_fullscreen;
+    const char* m_title;
 
-void initGUI();
-void shutdownGUI();
-void updateGUI();
-void renderGUI();
+public:
+    CoreWindow(const char* p_title, int p_width, int p_height, bool p_fullscreenSwitch = false, GLFWimage* p_icon = NULL);
+
+    void init();
+
+    void update();
+
+    void shutdown();
+
+    GLFWwindow* getWindow();
+};
