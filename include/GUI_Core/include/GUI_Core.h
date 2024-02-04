@@ -22,8 +22,8 @@
 #include <bx/uint32_t.h>
 
 #include <2D/UIWindow.h>
-
-
+#include <2D/Viewer3DWindow.h>
+#include <2D/ToolPanelFile.h>
 
 class CoreWindow {
 private:

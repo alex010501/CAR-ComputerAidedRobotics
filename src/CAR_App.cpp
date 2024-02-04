@@ -12,7 +12,7 @@ int main()
     std::vector<UIWindow*> windowList;
 
     Viewer3DWindow window1("Computer Aided Robotics");
-    Viewer3DWindow window2("CAR");
+    ToolPanelFile window2("File");
     windowList.push_back(&window1);
     windowList.push_back(&window2);
 
