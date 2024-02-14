@@ -13,8 +13,13 @@ set(GUI_SOURCES
     # ${CMAKE_CURRENT_SOURCE_DIR}/include/GUI_Core.h
     # ${GUI_Core_SOURCE_DIR}/src/2D/BaseFigure.cpp
     ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow.cpp
-    ${GUI_Core_SOURCE_DIR}/src/2D/Viewer3DWindow.cpp    
-    ${GUI_Core_SOURCE_DIR}/src/2D/ToolPanelFile.cpp
+    ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_3DWorkspace.cpp
+    ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_Console.cpp
+    ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_LibraryViewer.cpp
+    ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_PropertiesViewer.cpp
+    ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_SceneTreeViewer.cpp
+    ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_ToolPanel.cpp
+
     # ${GUI_Core_SOURCE_DIR}/src/3D/BaseObject.cpp
     # ${GUI_Core_SOURCE_DIR}/src/3D/RenderWindow.cpp
 )

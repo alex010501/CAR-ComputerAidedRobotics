@@ -11,12 +11,22 @@ int main()
 {
     std::vector<UIWindow*> windowList;
 
-    Viewer3DWindow window1("Computer Aided Robotics");
-    ToolPanelFile window2("File");
+    // Viewer3DWindow window1("Computer Aided Robotics");
+    // ToolPanelFile window2("File");
+    UIWindow_3DWorkSpace window1("3d Workspace");
+    UIWindow_Console window2("Console");
+    UIWindow_LibraryViewer window3("Library");
+    UIWindow_PropertiesViewer window4("Properties");
+    UIWindow_SceneTreeViewer window5("Scene Tree");
+    UIWindow_ToolPanel window6("Tools");
     windowList.push_back(&window1);
-    windowList.push_back(&window2);
+    windowList.push_back(&window2);    
+    windowList.push_back(&window3);
+    windowList.push_back(&window4);
+    windowList.push_back(&window5);
+    windowList.push_back(&window6);
 
-    std::cout << "Welcome to Computer Aided Robotics" << std::endl;
+    // std::cout << "Welcome to Computer Aided Robotics" << std::endl;
     
     int width, height, channels;
     unsigned char* iconData = stbi_load("resources/RA_Icon.png", &width, &height, &channels, 0);
@@ -27,8 +37,8 @@ int main()
 
     CoreWindow testWindow("Computer Aided Robotics", icon, windowList);
 
-    std::cout << "Starting application" << std::endl;
-    std::cout << "Press enter to continue" << std::endl;
+    // std::cout << "Starting application" << std::endl;
+    // std::cout << "Press enter to continue" << std::endl;
     getchar();
 
     testWindow.init();

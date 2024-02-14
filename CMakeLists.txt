@@ -32,7 +32,11 @@ add_subdirectory(${INCLUDE_DIR}/RobotArmLib)
 add_subdirectory(${INCLUDE_DIR}/GUI_Core)
 
 # add the executable
-add_executable(CAR_App ${SOURCE_FILE})
+if (WIN32)
+    add_executable(CAR_App WIN32 ${SOURCE_FILE})
+else ()
+    add_executable(CAR_App ${SOURCE_FILE})
+endif ()
 
 # target my libraries
 target_link_libraries(CAR_App PRIVATE RobotArmLib GUI_Core)

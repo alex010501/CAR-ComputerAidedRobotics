@@ -22,6 +22,13 @@
 #include <bx/uint32_t.h>
 
 #include <2D/UIWindow.h>
+#include <2D/UIWindow_3DWorkspace.h>
+#include <2D/UIWindow_Console.h>
+#include <2D/UIWindow_LibraryViewer.h>
+#include <2D/UIWindow_PropertiesViewer.h>
+#include <2D/UIWindow_SceneTreeViewer.h>
+#include <2D/UIWindow_ToolPanel.h>
+
 #include <2D/Viewer3DWindow.h>
 #include <2D/ToolPanelFile.h>
 
