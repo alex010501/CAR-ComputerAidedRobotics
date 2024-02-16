@@ -52,6 +52,13 @@ void CoreWindow::init()
 
     glfwSetWindowSizeCallback(this->m_window, CoreWindowResizeCallback);
 
+    auto CoreWindowPosCallback = [](GLFWwindow* p_window, int p_x, int p_y)
+    {
+        static_cast<CoreWindow*>(glfwGetWindowUserPointer(p_window))->PosCallback(p_x, p_y);
+    };
+
+    glfwSetWindowPosCallback(this->m_window, CoreWindowPosCallback);
+
     // Initialize BGFX
     bgfx::PlatformData lv_pd;
     #if BX_PLATFORM_LINUX || BX_PLATFORM_BSD
@@ -109,6 +116,12 @@ void CoreWindow::ResizeCallback(int p_width, int p_height)
     this->update();
 }
 
+void CoreWindow::PosCallback(int p_x, int p_y)
+{
+    glfwSetWindowPos(this->m_window, p_x, p_y);
+    this->update();
+}
+
 void CoreWindow::update()
 {
     char * lv_buf = new char[256];
@@ -163,6 +176,10 @@ void CoreWindow::shutdown()
 {
     ImGui_Implbgfx_Shutdown();
     ImGui_ImplGlfw_Shutdown();
+    for (UIWindow* window : this->m_childWindows)
+    {
+        window->shutdown();
+    }
     ImGui::DestroyContext();
     bgfx::shutdown();
     glfwDestroyWindow(this->m_window);

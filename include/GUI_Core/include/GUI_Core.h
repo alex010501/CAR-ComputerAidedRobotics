@@ -29,8 +29,6 @@
 #include <2D/UIWindow_SceneTreeViewer.h>
 #include <2D/UIWindow_ToolPanel.h>
 
-#include <2D/Viewer3DWindow.h>
-#include <2D/ToolPanelFile.h>
 
 class CoreWindow {
 private:
@@ -51,6 +49,8 @@ public:
     void shutdown();
 
     void ResizeCallback(int p_width, int p_height);
+
+    void PosCallback(int p_xpos, int p_ypos);
 
     GLFWwindow* getWindow();
 };

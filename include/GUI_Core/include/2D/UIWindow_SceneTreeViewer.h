@@ -12,4 +12,5 @@ public:
     // Add class methods here
     UIWindow_SceneTreeViewer(const char* p_title);
     void draw();
+    void shutdown();
 };

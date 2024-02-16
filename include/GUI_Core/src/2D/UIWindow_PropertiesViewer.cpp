@@ -12,3 +12,8 @@ void UIWindow_PropertiesViewer::draw()
     ImGui::InputText("Input", lv_input.data(), 256);
     ImGui::End();
 }
+
+void UIWindow_PropertiesViewer::shutdown()
+{
+    
+}

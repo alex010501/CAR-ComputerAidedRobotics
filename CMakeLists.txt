@@ -33,7 +33,8 @@ add_subdirectory(${INCLUDE_DIR}/GUI_Core)
 
 # add the executable
 if (WIN32)
-    add_executable(CAR_App WIN32 ${SOURCE_FILE})
+    # add_executable(CAR_App WIN32 ${SOURCE_FILE})
+    add_executable(CAR_App ${SOURCE_FILE})
 else ()
     add_executable(CAR_App ${SOURCE_FILE})
 endif ()

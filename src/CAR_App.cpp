@@ -1,5 +1,5 @@
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+// #include "stb_image.h"
 
 #include <iostream>
 
@@ -29,7 +29,7 @@ int main()
     // std::cout << "Welcome to Computer Aided Robotics" << std::endl;
     
     int width, height, channels;
-    unsigned char* iconData = stbi_load("resources/RA_Icon.png", &width, &height, &channels, 0);
+    unsigned char* iconData = stbi_load("resources\\RA_Icon.png", &width, &height, &channels, 0);
     GLFWimage icon[1];
     icon[0].width = width;
     icon[0].height = height;
@@ -39,7 +39,7 @@ int main()
 
     // std::cout << "Starting application" << std::endl;
     // std::cout << "Press enter to continue" << std::endl;
-    getchar();
+    // getchar();
 
     testWindow.init();
     while (!glfwWindowShouldClose(testWindow.getWindow()))
@@ -50,6 +50,6 @@ int main()
     }
     testWindow.shutdown();
     // std::cout << "Rate application by 1 to 10" << std::endl;
-    // getchar();
+    getchar();
     return 0;
 }
