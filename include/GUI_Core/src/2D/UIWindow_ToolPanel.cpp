@@ -27,6 +27,7 @@ void UIWindow_ToolPanel::draw()
 
     ImGui::Begin(m_title, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysAutoResize);
     // UIWindow::draw();
+    ImGui::ShowMetricsWindow();
 
     ImGui::ImageButton(this->NewFileIconTexture, ImVec2(this->NewFileIcon.width, this->NewFileIcon.height));
     ImGui::SameLine();
