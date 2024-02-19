@@ -23,7 +23,7 @@ add_subdirectory(include/GUI_Core)
 # add the executable
 if (WIN32)
     # add_executable(CAR_App WIN32 ${SOURCE_FILE})
-    add_executable(CAR_App ${SOURCES})
+    add_executable(CAR_App ${SOURCES} resources/CAR_App.rc)
 else ()
     add_executable(CAR_App ${SOURCES})
 endif ()
@@ -35,3 +35,9 @@ target_link_libraries(CAR_App PRIVATE RobotArmLib GUI_Core)
 if (WIN32)
     target_link_libraries(CAR_App PRIVATE -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl, -Bdynamic)
 endif (WIN32)
+
+# Copy Resources
+file(COPY resources/ DESTINATION ${PROJECT_BINARY_DIR}/resources/)
+
+# Symlink Resources
+# add_custom_command(TARGET CAR_App PRE_BUILD COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/resources ${PROJECT_BINARY_DIR}/resources)

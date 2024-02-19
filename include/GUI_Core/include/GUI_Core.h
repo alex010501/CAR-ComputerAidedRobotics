@@ -15,9 +15,6 @@
 #include <thread>
 #include <vector>
 
-// #include <GLFW/glfw3.h>
-// #include <GLFW/glfw3native.h>
-
 #include <2D/UIWindow.h>
 #include <2D/UIWindow_3DWorkspace.h>
 #include <2D/UIWindow_Console.h>

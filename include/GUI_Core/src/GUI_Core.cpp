@@ -17,7 +17,6 @@ int CoreWindow::init()
         return 1;
     }
 
-    // glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     glfwWindowHint(GLFW_FOCUS_ON_SHOW, GLFW_TRUE);
    
     // Create GLFW window
@@ -64,6 +63,7 @@ int CoreWindow::init()
     ImGuiIO &io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport
     ImGui::StyleColorsDark();
 
     ImGui_ImplGlfw_InitForOpenGL(this->m_window, true);
@@ -96,6 +96,7 @@ void CoreWindow::update()
         window->draw();
     }
     ImGui::Render();
+    ImGui::UpdatePlatformWindows();
 
     /* Render here */
     glClear(GL_COLOR_BUFFER_BIT);

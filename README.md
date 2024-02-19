@@ -10,7 +10,7 @@ The main target of
 
 ## Requirements
 
-* **CMake 1.13 or later**
+* **CMake 3.13 or later**
 * **Clang 16.0.5 or later**
 * **VSCode with CMake Tools Extension** for convenient work
 
