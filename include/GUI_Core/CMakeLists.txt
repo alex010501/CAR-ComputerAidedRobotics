@@ -10,8 +10,6 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 set(GUI_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/GUI_Core.cpp
-    # ${CMAKE_CURRENT_SOURCE_DIR}/include/GUI_Core.h
-    # ${GUI_Core_SOURCE_DIR}/src/2D/BaseFigure.cpp
     ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow.cpp
     ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_3DWorkspace.cpp
     ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_Console.cpp
@@ -19,49 +17,48 @@ set(GUI_SOURCES
     ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_PropertiesViewer.cpp
     ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_SceneTreeViewer.cpp
     ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_ToolPanel.cpp
-
-    # ${GUI_Core_SOURCE_DIR}/src/3D/BaseObject.cpp
-    # ${GUI_Core_SOURCE_DIR}/src/3D/RenderWindow.cpp
 )
 
 set(GUI_EXTERN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/extern)
 set(GUI_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
-set(BGFX_C_DIR ${GUI_EXTERN_DIR}/bgfx.cmake)
-set(BGFX_DIR ${BGFX_C_DIR}/bgfx)
-set(BIMG_DIR ${BGFX_C_DIR}/bimg)
-set(BX_DIR ${BGFX_C_DIR}/bx)
 
-find_package(bgfx)
+# Add OpenGL dependencies
+find_package(OpenGL REQUIRED)
 
-# add subdirectories for external libraries
-add_subdirectory(${GUI_EXTERN_DIR}/bgfx.cmake)
-add_subdirectory(${GUI_EXTERN_DIR}/imgui)
-add_subdirectory(${GUI_EXTERN_DIR}/GLFW)
+# Add external dependencies 
+add_subdirectory(extern)
 
 # include directories for my libraries
-include_directories(${GUI_INCLUDE_DIR})
+include_directories(include)
 
-# include directories for GLFW files
-include_directories(${GUI_EXTERN_DIR}/GLFW/include)
+# include directories for external libraries
+include_directories(
+	extern/GLFW/include/
+	external/GLM/
+	external/GLEW/include/
+	external/assimp/include/
+	external/bullet3/src/
+	.
+)
 
-# include directories for imgui files
-include_directories(${GUI_EXTERN_DIR}/imgui)
+set(ALL_LIBS
+	${OPENGL_LIBRARY}
+	GLFW
+	GLEW
+    imgui
+    assimp
+)
 
-# include directories for bgfx files
-include_directories(${BGFX_C_DIR}/bgfx/include)
-include_directories(${BGFX_C_DIR}/bgfx/3rdparty)
-include_directories(${BGFX_C_DIR}/bgfx/3rdparty/khronos)
-include_directories(${BGFX_C_DIR}/bgfx/examples)
-# include directories for bx files
-include_directories(${BGFX_C_DIR}/bx/include)
-include_directories(${BGFX_C_DIR}/bx/3rdparty)
-# include directories for bimg files
-include_directories(${BGFX_C_DIR}/bimg/include)
-include_directories(${BGFX_C_DIR}/bimg/3rdparty)
+add_definitions(
+	-DTW_STATIC
+	-DTW_NO_LIB_PRAGMA
+	-DTW_NO_DIRECT3D
+	-DGLEW_STATIC
+	-D_CRT_SECURE_NO_WARNINGS
+)
 
+# target GUI_Core
 add_library(GUI_Core ${GUI_SOURCES})
 
-# target imgui
-target_link_libraries(GUI_Core PRIVATE IMGUI)
-# target glfw and bgfx
-target_link_libraries(GUI_Core PRIVATE bgfx glfw)
+# target libraries
+target_link_libraries(GUI_Core ${ALL_LIBS})
