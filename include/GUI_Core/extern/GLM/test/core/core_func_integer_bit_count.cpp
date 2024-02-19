@@ -5,22 +5,13 @@
 #include <cstdlib>     //To define "exit", req'd by XLC.
 #include <ctime>
 
-#include <glm/glm.hpp>
-
-#ifdef NDEBUG
-
-#if GLM_COMPILER & GLM_COMPILER_CLANG
-#	pragma clang diagnostic push
-#	pragma clang diagnostic ignored "-Wsign-conversion"
-#endif
-
-static unsigned rotatel(unsigned x, int n)
+unsigned rotatel(unsigned x, int n)
 {
 	if (static_cast<unsigned>(n) > 63) { std::printf("rotatel, n out of range.\n"); std::exit(1);}
 	return (x << n) | (x >> (32 - n));
 }
 
-static int pop0(unsigned x)
+int pop0(unsigned x)
 {
 	x = (x & 0x55555555) + ((x >> 1) & 0x55555555);
 	x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
@@ -30,7 +21,7 @@ static int pop0(unsigned x)
 	return x;
 }
 
-static int pop1(unsigned x)
+int pop1(unsigned x)
 {
 	x = x - ((x >> 1) & 0x55555555);
 	x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
@@ -43,7 +34,7 @@ static int pop1(unsigned x)
    return x*0x01010101 >> 24;
 if your machine has a fast multiplier (suggested by Jari Kirma). */
 
-static int pop2(unsigned x)
+int pop2(unsigned x)
 {
 	unsigned n;
 
@@ -60,7 +51,7 @@ static int pop2(unsigned x)
            (x >> 30);
 which runs faster on most machines (suggested by Norbert Juffa). */
 
-static int pop3(unsigned x)
+int pop3(unsigned x)
 {
 	unsigned n;
 
@@ -75,7 +66,7 @@ static int pop3(unsigned x)
 	return x >> 24;
 }
 
-static int pop4(unsigned x)
+int pop4(unsigned x)
 {
 	int n;
 
@@ -87,7 +78,7 @@ static int pop4(unsigned x)
 	return n;
 }
 
-static int pop5(unsigned x)
+int pop5(unsigned x)
 {
 	int i, sum;
 
@@ -101,7 +92,7 @@ static int pop5(unsigned x)
 	return -sum;                 // return sum;
 }
 
-static int pop5a(unsigned x)
+int pop5a(unsigned x)
 {
 	int sum;
 
@@ -115,7 +106,7 @@ static int pop5a(unsigned x)
 	return sum;
 }
 
-static int pop6(unsigned x)
+int pop6(unsigned x)
 { // Table lookup.
 	static char table[256] = {
 		0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4,
@@ -145,7 +136,7 @@ static int pop6(unsigned x)
 }
 
 // The following works only for 8-bit quantities.
-static int pop7(unsigned x)
+int pop7(unsigned x)
 {
 	x = x*0x08040201;    // Make 4 copies.
 	x = x >> 3;          // So next step hits proper bits.
@@ -156,7 +147,7 @@ static int pop7(unsigned x)
 }
 
 // The following works only for 7-bit quantities.
-static int pop8(unsigned x)
+int pop8(unsigned x)
 {
 	x = x*0x02040810;    // Make 4 copies, left-adjusted.
 	x = x & 0x11111111;  // Every 4th bit.
@@ -166,7 +157,7 @@ static int pop8(unsigned x)
 }
 
 // The following works only for 15-bit quantities.
-static int pop9(unsigned x)
+int pop9(unsigned x)
 {
 	unsigned long long y;
 	y = x * 0x0002000400080010ULL;
@@ -177,19 +168,16 @@ static int pop9(unsigned x)
 }
 
 int errors;
-static void error(int x, int y)
+void error(int x, int y)
 {
 	errors = errors + 1;
 	std::printf("Error for x = %08x, got %08x\n", x, y);
 }
 
-#if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable: 4389)  // nonstandard extension used : nameless struct/union
-#endif
-
 int main()
 {
+#	ifdef NDEBUG
+
 	int i, n;
 	static unsigned test[] = {0,0, 1,1, 2,1, 3,2, 4,1, 5,2, 6,2, 7,3,
 		8,1, 9,2, 10,2, 11,3, 12,2, 13,3, 14,3, 15,4, 16,1, 17,2,
@@ -298,21 +286,6 @@ int main()
 
 	if (errors == 0)
 		std::printf("Passed all %d cases.\n", static_cast<int>(sizeof(test)/8));
+
+#	endif//NDEBUG
 }
-
-#if defined(_MSC_VER)
-#	pragma warning(pop)
-#endif
-
-#if GLM_COMPILER & GLM_COMPILER_CLANG
-#	pragma clang diagnostic pop
-#endif
-
-#else
-
-int main()
-{
-	return 0;
-}
-
-#endif//NDEBUG

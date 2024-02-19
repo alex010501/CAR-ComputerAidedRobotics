@@ -8,7 +8,7 @@
 
 std::size_t const TestSamples = 10000;
 
-static int test_linearRand()
+int test_linearRand()
 {
 	int Error = 0;
 
@@ -220,7 +220,7 @@ static int test_linearRand()
 	return Error;
 }
 
-static int test_circularRand()
+int test_circularRand()
 {
 	int Error = 0;
 
@@ -244,7 +244,7 @@ static int test_circularRand()
 	return Error;
 }
 
-static int test_sphericalRand()
+int test_sphericalRand()
 {
 	int Error = 0;
 
@@ -279,7 +279,7 @@ static int test_sphericalRand()
 	return Error;
 }
 
-static int test_diskRand()
+int test_diskRand()
 {
 	int Error = 0;
 
@@ -301,7 +301,7 @@ static int test_diskRand()
 	return Error;
 }
 
-static int test_ballRand()
+int test_ballRand()
 {
 	int Error = 0;
 

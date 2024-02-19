@@ -4,22 +4,22 @@
 
 class UIWindow_ToolPanel: public UIWindow {
 private:
-    GUI_Helper::ImageData NewFileIcon;
-    GUI_Helper::ImageData OpenFileIcon;
-    GUI_Helper::ImageData SaveIcon;
-    GUI_Helper::ImageData SaveAsIcon;
-    GUI_Helper::ImageData CutIcon;
-    GUI_Helper::ImageData CopyIcon;
-    GUI_Helper::ImageData PasteIcon;
+    // GUI_Helper::ImageData NewFileIcon;
+    // GUI_Helper::ImageData OpenFileIcon;
+    // GUI_Helper::ImageData SaveIcon;
+    // GUI_Helper::ImageData SaveAsIcon;
+    // GUI_Helper::ImageData CutIcon;
+    // GUI_Helper::ImageData CopyIcon;
+    // GUI_Helper::ImageData PasteIcon;
 
 public:
-    ImTextureID NewFileIconTexture;
-    ImTextureID OpenFileIconTexture;
-    ImTextureID SaveIconTexture;
-    ImTextureID SaveAsIconTexture;
-    ImTextureID CutIconTexture;
-    ImTextureID CopyIconTexture;
-    ImTextureID PasteIconTexture;
+    // ImTextureID NewFileIconTexture;
+    // ImTextureID OpenFileIconTexture;
+    // ImTextureID SaveIconTexture;
+    // ImTextureID SaveAsIconTexture;
+    // ImTextureID CutIconTexture;
+    // ImTextureID CopyIconTexture;
+    // ImTextureID PasteIconTexture;
 
     // Add variables here
     float m_speed;

@@ -41,15 +41,19 @@ int main()
     // std::cout << "Press enter to continue" << std::endl;
     // getchar();
 
-    testWindow.init();
-    while (!glfwWindowShouldClose(testWindow.getWindow()))
+    if (testWindow.init())
+    {
+        std::cout << "Error initializing window" << std::endl;
+        return 1;
+    }
+    while (testWindow.isOpen())
     {
         // Poll for and process events
-        glfwPollEvents();
+        testWindow.pollEvents();
         testWindow.update();
     }
     testWindow.shutdown();
     // std::cout << "Rate application by 1 to 10" << std::endl;
-    getchar();
+    // getchar();
     return 0;
 }

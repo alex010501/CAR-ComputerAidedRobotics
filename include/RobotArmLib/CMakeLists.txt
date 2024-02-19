@@ -4,36 +4,14 @@ project(RobotArmLib)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(RAL_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/RobotArmLib.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/RobotLink.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/RobotJoint.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/RobotAdditions.cpp    
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/MathAdditions.cpp
-    # ${CMAKE_CURRENT_SOURCE_DIR}/include/RobotArmLib.h
-    # ${CMAKE_CURRENT_SOURCE_DIR}/include/RobotLink.h
-    # ${CMAKE_CURRENT_SOURCE_DIR}/include/RobotJoint.h
-    # ${CMAKE_CURRENT_SOURCE_DIR}/include/RobotAdditions.h
-    # ${CMAKE_CURRENT_SOURCE_DIR}/include/MathAdditions.h
-)
+# Subprojects
+set(EIGEN_DIR ${RobotArmLib_SOURCE_DIR}/extern/Eigen)
+add_subdirectory(extern/Eigen)
 
-set(RAL_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
-set(RAL_EXTERN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/extern)
-set(EIGEN_DIR ${RAL_EXTERN_DIR}/Eigen)
-
-# set(EIGEN3_DIR ${RAL_EXTERN_DIR}/Eigen/cmake)
-# find_package(Eigen3)
-
-include_directories(${RAL_INCLUDE_DIR})
-
-# include_directories(${RAL_EXTERN_DIR}/Eigen)
-include_directories(${EIGEN_DIR})
-link_directories(${EIGEN_DIR})
-
-# include_directories(${EIGEN3_INCLUDE_DIR})
-
-add_subdirectory(${RAL_EXTERN_DIR}/Eigen)
+# Set 'RAL_SOURCES' variable
+file(GLOB_RECURSE RAL_SOURCES CONFIGURE_DEPENDS "include/*.h"
+                                                "src/*.cpp")
 
 add_library(RobotArmLib ${RAL_SOURCES})
 
-# target_link_libraries(RobotArmLib PRIVATE Eigen3)
+target_link_libraries(RobotArmLib Eigen3::Eigen)

@@ -15,74 +15,58 @@ void UIWindow::shutdown()
 {
     
 }
-
-GUI_Helper::ImageData GUI_Helper::loadImageToRAM(const char* filename)
+bool GUI_Helper::LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
 {
     // Load from file
     int image_width = 0;
     int image_height = 0;
-    int channels = 0;
-    unsigned char* image_data = stbi_load(filename, &image_width, &image_height, &channels, 4);
+    unsigned char* image_data = stbi_load(filename, &image_width, &image_height, NULL, 4);
+    if (image_data == NULL)
+        return false;
 
-    GUI_Helper::ImageData temp;
-    temp.width = image_width;
-    temp.height = image_height;
-    temp.channels = channels;
-    temp.data = image_data;
-    return temp;
-}
+    // Create a OpenGL texture identifier
+    GLuint image_texture;
+    glGenTextures(1, &image_texture);
+    glBindTexture(GL_TEXTURE_2D, image_texture);
 
-void GUI_Helper::freeImageMemory(GUI_Helper::ImageData image)
-{
-    stbi_image_free(image.data);
-}
+    // Setup filtering parameters for display
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // This is required on WebGL for non power-of-two textures
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Same
 
-ImTextureID GUI_Helper::loadImageToGPU(GUI_Helper::ImageData imageData)
-{   
-    const bgfx::Memory* image_memory = bgfx::copy(imageData.data, imageData.width * imageData.height * imageData.channels);
-    // Create texture
-    auto res = bgfx::createTexture2D(imageData.width, imageData.height, false, 1,
-                                     bgfx::TextureFormat::RGBA8,
-                                     0ULL,
-                                     image_memory);
-                                    //  bgfx::makeRef(imageData.data, imageData.width * imageData.height * imageData.channels));
-    if(!bgfx::isValid(res)) {
-        // Something went wrong
-        std::cout << "Error creating texture"<< std::endl;
-        // return (void*)(intptr_t)0;
-    }
-    return (void*)(intptr_t)res.idx;
-    /*
-    // Load from file
-    int image_width = 0;
-    int image_height = 0;
-    int channels = 0;
-    unsigned char* image_data = stbi_load(filename, &image_width, &image_height, &channels, 4);
-
-    // Create texture
-    auto res = bgfx::createTexture2D(image_width, image_height, false, 1,
-                                     bgfx::TextureFormat::RGBA8,
-	                                 BGFX_SAMPLER_U_CLAMP
-	                                 | BGFX_SAMPLER_V_CLAMP
-	                                 | BGFX_SAMPLER_MIN_POINT
-	                                 | BGFX_SAMPLER_MAG_POINT,
-                                     bgfx::copy(image_data, image_width * image_height * channels));
-    // Check if texture was created
-    if(!bgfx::isValid(res)) {
-        // Something went wrong
-        std::cout << "Error loading image: " << filename << std::endl;
-        stbi_image_free(image_data);
-        ImageData temp;
-        temp.texture = 0;
-        temp.width = 0;
-        temp.height = 0;
-        return temp;
-    }
-
+    // Upload pixels into texture
+#if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+#endif
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
     stbi_image_free(image_data);
-    ImageData temp;
-    temp.texture = (void*)(intptr_t)res.idx;
-    temp.width = image_width;
-    temp.height = image_height;
-    return temp;*/
+
+    *out_texture = image_texture;
+    *out_width = image_width;
+    *out_height = image_height;
+
+    return true;
+}
+
+GUI_Helper::ImageData GUI_Helper::LoadImage(const char* filename)
+{
+    int my_image_width = 0;
+    int my_image_height = 0;
+    GLuint my_image_texture = 0;
+    bool ret = LoadTextureFromFile(filename, &my_image_texture, &my_image_width, &my_image_height);
+    IM_ASSERT(ret);
+
+    GUI_Helper::ImageData imageData;
+    imageData.texture = (void*)(intptr_t)my_image_texture;
+    imageData.width = my_image_width;
+    imageData.height = my_image_height;
+
+    return imageData;
+}
+
+bool GUI_Helper::ImGui_imageButton(GUI_Helper::ImageData imageData)
+{
+    bool ret = ImGui::ImageButton(imageData.texture, ImVec2(imageData.width, imageData.height));
+    return ret;
 }

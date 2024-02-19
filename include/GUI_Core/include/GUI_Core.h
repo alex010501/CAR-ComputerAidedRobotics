@@ -15,11 +15,8 @@
 #include <thread>
 #include <vector>
 
-#include <GLFW/glfw3.h>
-#include <GLFW/glfw3native.h>
-#include <bgfx/bgfx.h>
-#include <bgfx/platform.h>
-#include <bx/uint32_t.h>
+// #include <GLFW/glfw3.h>
+// #include <GLFW/glfw3native.h>
 
 #include <2D/UIWindow.h>
 #include <2D/UIWindow_3DWorkspace.h>
@@ -42,7 +39,7 @@ private:
 public:
     CoreWindow(const char* p_title, GLFWimage* p_icon = NULL, std::vector<UIWindow*> p_childWindows = {}, int p_width = 1280, int p_height = 720);
 
-    void init();
+    int init();
 
     void update();
 
@@ -52,5 +49,7 @@ public:
 
     void PosCallback(int p_xpos, int p_ypos);
 
-    GLFWwindow* getWindow();
+    bool isOpen();
+
+    void pollEvents();
 };

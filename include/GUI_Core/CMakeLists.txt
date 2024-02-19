@@ -1,64 +1,48 @@
 cmake_minimum_required(VERSION 3.13)
 project(GUI_Core)
 
+# OpenGL
+set(OpenGL_GL_PREFERENCE GLVND)
+find_package(OpenGL REQUIRED)
+include_directories(src ${OPENGL_INCLUDE_DIRS})
+
+# C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+# Subprojects
+add_subdirectory(extern/glad)
+add_subdirectory(extern/glfw)
+add_subdirectory(extern/stb_image)
+add_subdirectory(extern/glm)
 
-set(GUI_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/GUI_Core.cpp
-    ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow.cpp
-    ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_3DWorkspace.cpp
-    ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_Console.cpp
-    ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_LibraryViewer.cpp
-    ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_PropertiesViewer.cpp
-    ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_SceneTreeViewer.cpp
-    ${GUI_Core_SOURCE_DIR}/src/2D/UIWindow_ToolPanel.cpp
+# ImGui
+set(imgui-directory extern/imgui)
+set(imgui-source ${imgui-directory}/imconfig.h
+	             ${imgui-directory}/imgui.h
+                 ${imgui-directory}/imgui.cpp
+                 ${imgui-directory}/imgui_draw.cpp
+                 ${imgui-directory}/imgui_internal.h
+                 ${imgui-directory}/imgui_widgets.cpp
+                 ${imgui-directory}/imstb_rectpack.h
+                 ${imgui-directory}/imstb_textedit.h
+                 ${imgui-directory}/imstb_truetype.h
+                 ${imgui-directory}/imgui_tables.cpp
+                 ${imgui-directory}/imgui_demo.cpp
+                 ${imgui-directory}/backends/imgui_impl_glfw.cpp
+                 ${imgui-directory}/backends/imgui_impl_opengl3.cpp
 )
 
-set(GUI_EXTERN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/extern)
-set(GUI_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+# Set `GUI_Source` variable 
+file(GLOB_RECURSE GUI_Sources CONFIGURE_DEPENDS "include/*.h"
+                                                "src/*.cpp"
+                                                "include/2D/*.h"
+                                                "src/2D/*.cpp"
+                                                "include/3D/*.h"                                            
+                                                "src/3D/*.cpp")
 
-# Add OpenGL dependencies
-find_package(OpenGL REQUIRED)
-
-# Add external dependencies 
-add_subdirectory(extern)
-
-# include directories for my libraries
-include_directories(include)
-
-# include directories for external libraries
-include_directories(
-	extern/GLFW/include/
-	external/GLM/
-	external/GLEW/include/
-	external/assimp/include/
-	external/bullet3/src/
-	.
-)
-
-set(ALL_LIBS
-	${OPENGL_LIBRARY}
-	GLFW
-	GLEW
-    imgui
-    assimp
-)
-
-add_definitions(
-	-DTW_STATIC
-	-DTW_NO_LIB_PRAGMA
-	-DTW_NO_DIRECT3D
-	-DGLEW_STATIC
-	-D_CRT_SECURE_NO_WARNINGS
-)
-
-# target GUI_Core
-add_library(GUI_Core ${GUI_SOURCES})
+add_library(GUI_Core ${GUI_Sources} ${imgui-source})
 
 # target libraries
-target_link_libraries(GUI_Core ${ALL_LIBS})
+target_link_libraries(GUI_Core ${OPENGL_LIBRARIES} glad glfw stb_image glm)
+target_include_directories(GUI_Core PUBLIC ${imgui-directory})

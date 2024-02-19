@@ -1,7 +1,8 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/norm.hpp>
 
-static int test_lMaxNorm()
+
+int test_lMaxNorm()
 {
 	int Error(0);
 	
@@ -18,7 +19,7 @@ static int test_lMaxNorm()
 	return Error;
 }
 
-static int test_lxNorm()
+int test_lxNorm()
 {
 	int Error(0);
 

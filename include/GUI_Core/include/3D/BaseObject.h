@@ -1,13 +1,8 @@
 #pragma once
 
-#include <bgfx/bgfx.h>
-#include <bx/uint32_t.h>
 
-struct bgfx_mesh
+struct mesh
 {
-    bgfx::VertexBufferHandle vbo;
-    bgfx::IndexBufferHandle ibo;
-    bgfx::VertexLayout layout;
 };
 
 struct axis

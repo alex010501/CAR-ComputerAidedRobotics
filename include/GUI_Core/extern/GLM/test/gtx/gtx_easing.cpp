@@ -5,8 +5,9 @@
 
 namespace
 {
+
 	template<typename T>
-	static void _test_easing()
+	void _test_easing()
 	{
 		T a = static_cast<T>(0.5);
 		T r;
@@ -49,6 +50,7 @@ namespace
 		r = glm::bounceEaseOut(a);
 		r = glm::bounceEaseInOut(a);
 	}
+
 }
 
 int main()

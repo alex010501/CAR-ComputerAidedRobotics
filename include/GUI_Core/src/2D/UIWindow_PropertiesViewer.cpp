@@ -8,8 +8,7 @@ UIWindow_PropertiesViewer::UIWindow_PropertiesViewer(const char* p_title): UIWin
 void UIWindow_PropertiesViewer::draw()
 {
     UIWindow::draw();
-    std::string lv_input = "Properties";
-    ImGui::InputText("Input", lv_input.data(), 256);
+    ImGui::Button("Properties Viewer");
     ImGui::End();
 }
 

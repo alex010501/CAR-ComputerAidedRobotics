@@ -2,17 +2,16 @@
 
 #include <string>
 
-#include <GLEW/glew.h>
-
 #include <imgui.h>
+#include <imgui_internal.h>
 #include <backends/imgui_impl_glfw.h>
-#include <backends/imgui_impl_bgfx.h>
-#include <bgfx/bgfx.h>
-#include <bgfx/platform.h>
-#include <bx/uint32_t.h>
-#include <bx/math.h>
+#include <backends/imgui_impl_opengl3.h>
 
-#include "stb_image.h"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
+#include <glm/glm.hpp>
+#include <stb_image.h>
 
 class UIWindow {
 protected:
@@ -27,22 +26,14 @@ namespace GUI_Helper
 {
     struct ImageData
     {
-        int width;
-        int height;
-        int channels;
-        unsigned char* data;
-    };
-
-    struct ImageTexture
-    {
         ImTextureID texture;
         int width;
         int height;
     };
     
-    ImageData loadImageToRAM(const char* filename);
+    bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height);
 
-    ImTextureID loadImageToGPU(ImageData imageData);
+    ImageData LoadImage(const char* filename);
 
-    void freeImageMemory(ImageData imageMemory);
+    bool ImGui_imageButton(ImageData imageData);
 }

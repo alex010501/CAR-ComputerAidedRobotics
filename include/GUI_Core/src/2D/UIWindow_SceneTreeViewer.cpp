@@ -8,8 +8,7 @@ UIWindow_SceneTreeViewer::UIWindow_SceneTreeViewer(const char* p_title): UIWindo
 void UIWindow_SceneTreeViewer::draw()
 {
     UIWindow::draw();
-    std::string lv_input = "Scene Tree";
-    ImGui::InputText("Input", lv_input.data(), 256);
+    ImGui::Button("Scene Tree Viewer");
     ImGui::End();
 }
 
