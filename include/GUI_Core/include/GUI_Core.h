@@ -34,7 +34,7 @@ private:
     std::vector<UIWindow*> m_childWindows;
 
 public:
-    CoreWindow(const char* p_title, GLFWimage* p_icon = NULL, std::vector<UIWindow*> p_childWindows = {}, int p_width = 1280, int p_height = 720);
+    CoreWindow(const char* p_title, std::vector<UIWindow*> p_childWindows = {}, const char* p_iconPath = nullptr, int p_width = 1280, int p_height = 720);
 
     int init();
 

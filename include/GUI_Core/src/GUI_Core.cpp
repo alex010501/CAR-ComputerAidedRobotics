@@ -1,8 +1,19 @@
 #include "GUI_Core.h"
 
-CoreWindow::CoreWindow(const char *p_title, GLFWimage* p_icon, std::vector<UIWindow*> p_childWindows, int p_width, int p_height): m_title(p_title)
+CoreWindow::CoreWindow(const char *p_title, std::vector<UIWindow*> p_childWindows, const char* p_iconPath, int p_width, int p_height): m_title(p_title)
 {
-    this->m_icon = p_icon;
+    if (p_iconPath)
+    {
+        int width, height, channels;
+        unsigned char* iconData = stbi_load(p_iconPath, &width, &height, &channels, 0);
+        this->m_icon[0].width = width;
+        this->m_icon[0].height = height;
+        this->m_icon[0].pixels = iconData;
+    }
+    else
+    {
+        this->m_icon = nullptr;
+    }
     this->m_width = p_width;
     this->m_height = p_height;
     this->m_childWindows = p_childWindows;
@@ -30,7 +41,15 @@ int CoreWindow::init()
     glfwSetWindowSizeLimits(this->m_window, 640, 360, GLFW_DONT_CARE, GLFW_DONT_CARE);
 
     // Set Icon
-    glfwSetWindowIcon(this->m_window, 1, this->m_icon);
+    if (this->m_icon)
+    {
+        glfwSetWindowIcon(this->m_window, 1, this->m_icon);
+    }
+    else
+    {
+        glfwSetWindowIcon(this->m_window, 0, NULL);
+    }
+    
     
     // Set GLFW window user pointer
     glfwSetWindowUserPointer(this->m_window, this);
