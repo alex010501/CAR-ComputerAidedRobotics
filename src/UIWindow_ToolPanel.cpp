@@ -1,14 +1,18 @@
-#include <2D/UIWindow_ToolPanel.h>
+#include <UIWindow_ToolPanel.h>
 
 UIWindow_ToolPanel::UIWindow_ToolPanel(const char* p_title): UIWindow(p_title)
 {
+    
+
+    // Math variables
     this->m_speed = 1.0f;
     this->m_frequency = 100;
     this->m_duration = 10; 
 }
 
 void UIWindow_ToolPanel::draw()
-{
+{   
+    // Icons for the buttons
     GUI_Helper::ImageData NewFileIcon  = GUI_Helper::LoadImage("resources\\Images\\New.png");
     GUI_Helper::ImageData OpenFileIcon = GUI_Helper::LoadImage("resources\\Images\\Open.png");
     GUI_Helper::ImageData SaveIcon     = GUI_Helper::LoadImage("resources\\Images\\Save.png");
@@ -35,11 +39,11 @@ void UIWindow_ToolPanel::draw()
     ImGui::SameLine();
     GUI_Helper::ImGui_imageButton(PasteIcon);
     ImGui::SameLine(0, 50);
-    ImGui::SliderFloat("Speed", &m_speed, 0.1f, 2.0f);
+    ImGui::SliderFloat("Speed", &this->m_speed, 0.1f, 2.0f);
     ImGui::SameLine();
-    ImGui::InputInt("Frequency", &m_frequency);
+    ImGui::InputInt("Frequency", &this->m_frequency);
     ImGui::SameLine();
-    ImGui::InputFloat("Duration", &m_duration);
+    ImGui::InputFloat("Duration", &this->m_duration);
     ImGui::End();
 }
 

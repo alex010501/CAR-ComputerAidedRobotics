@@ -38,6 +38,8 @@ file(GLOB_RECURSE GUI_Sources CONFIGURE_DEPENDS "include/*.h"
                                                 "src/*.cpp"
                                                 "include/2D/*.h"
                                                 "src/2D/*.cpp"
+                                                "include/UI/*.h"
+                                                "src/UI/*.cpp"
                                                 "include/3D/*.h"                                            
                                                 "src/3D/*.cpp")
 

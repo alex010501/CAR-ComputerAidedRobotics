@@ -1,6 +1,6 @@
 #pragma once
 
-#include "UIWindow.h"
+#include <UI/UIWindow.h>
 
 class UIWindow_LibraryViewer: public UIWindow {
 private:

@@ -1,4 +1,4 @@
-#include <2D/UIWindow_SceneTreeViewer.h>
+#include <UIWindow_SceneTreeViewer.h>
 
 UIWindow_SceneTreeViewer::UIWindow_SceneTreeViewer(const char* p_title): UIWindow(p_title)
 {

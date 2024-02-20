@@ -15,13 +15,13 @@
 #include <thread>
 #include <vector>
 
-#include <2D/UIWindow.h>
-#include <2D/UIWindow_3DWorkspace.h>
-#include <2D/UIWindow_Console.h>
-#include <2D/UIWindow_LibraryViewer.h>
-#include <2D/UIWindow_PropertiesViewer.h>
-#include <2D/UIWindow_SceneTreeViewer.h>
-#include <2D/UIWindow_ToolPanel.h>
+#include <UI/UIWindow.h>
+// #include <2D/UIWindow_3DWorkspace.h>
+// #include <2D/UIWindow_Console.h>
+// #include <2D/UIWindow_LibraryViewer.h>
+// #include <2D/UIWindow_PropertiesViewer.h>
+// #include <2D/UIWindow_SceneTreeViewer.h>
+// #include <2D/UIWindow_ToolPanel.h>
 
 
 class CoreWindow {

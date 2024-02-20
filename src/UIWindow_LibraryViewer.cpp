@@ -1,4 +1,4 @@
-#include <2D/UIWindow_LibraryViewer.h>
+#include <UIWindow_LibraryViewer.h>
 
 UIWindow_LibraryViewer::UIWindow_LibraryViewer(const char* p_title): UIWindow(p_title)
 {

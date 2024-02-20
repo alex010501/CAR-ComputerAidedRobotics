@@ -1,7 +1,15 @@
 #include <iostream>
-
+// Add my libraries
 #include <RobotArmLib.h>
 #include <GUI_Core.h>
+
+// Classes
+#include <UIWindow_3DWorkspace.h>
+#include <UIWindow_Console.h>
+#include <UIWindow_LibraryViewer.h>
+#include <UIWindow_PropertiesViewer.h>
+#include <UIWindow_SceneTreeViewer.h>
+#include <UIWindow_ToolPanel.h>
 
 int main()
 {
@@ -24,14 +32,6 @@ int main()
 
     // std::cout << "Welcome to Computer Aided Robotics" << std::endl;
     
-    // int width, height, channels;
-    // // unsigned char* iconData = stbi_load("resources\\Images\\RA_Icon.png", &width, &height, &channels, 0);
-    // unsigned char* iconData = stbi_load("resources\\Icons\\RA_Icon.png", &width, &height, &channels, 0);
-    // GLFWimage icon[1];
-    // icon[0].width = width;
-    // icon[0].height = height;
-    // icon[0].pixels = iconData;
-
     CoreWindow testWindow("Computer Aided Robotics", windowList, "resources\\Icons\\RA_Icon.png");
 
     if (testWindow.init())

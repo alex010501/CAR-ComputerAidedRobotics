@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "include/*.h"
                                             "src/*.cpp")
 
+include_directories(include/)                                         
 
 # include directories for my libraries
 include_directories(include/RobotArmLib/include/)

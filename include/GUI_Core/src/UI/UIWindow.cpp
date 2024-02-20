@@ -1,4 +1,4 @@
-#include <2D/UIWindow.h>
+#include <UI/UIWindow.h>
 #include <iostream>
 
 UIWindow::UIWindow(const char* p_title): m_title(p_title)
@@ -15,6 +15,7 @@ void UIWindow::shutdown()
 {
     
 }
+
 bool GUI_Helper::LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
 {
     // Load from file

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "UIWindow.h"
+#include <UI/UIWindow.h>
 
-class UIWindow_PropertiesViewer: public UIWindow {
+class UIWindow_SceneTreeViewer: public UIWindow {
 private:
 
 public:
@@ -10,7 +10,7 @@ public:
 
 
     // Add class methods here
-    UIWindow_PropertiesViewer(const char* p_title);
+    UIWindow_SceneTreeViewer(const char* p_title);
     void draw();
     void shutdown();
 };

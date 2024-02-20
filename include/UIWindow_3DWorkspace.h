@@ -1,8 +1,8 @@
 #pragma once
 
-#include "UIWindow.h"
+#include <UI/UIWindow.h>
 
-class UIWindow_Console: public UIWindow {
+class UIWindow_3DWorkSpace: public UIWindow {
 private:
     
 public:
@@ -10,7 +10,7 @@ public:
 
 
     // Add class methods here
-    UIWindow_Console(const char* p_title);
+    UIWindow_3DWorkSpace(const char* p_title);
     void draw();
     void shutdown();
 };

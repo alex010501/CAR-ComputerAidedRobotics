@@ -1,4 +1,4 @@
-#include <2D/UIWindow_PropertiesViewer.h>
+#include <UIWindow_PropertiesViewer.h>
 
 UIWindow_PropertiesViewer::UIWindow_PropertiesViewer(const char* p_title): UIWindow(p_title)
 {
