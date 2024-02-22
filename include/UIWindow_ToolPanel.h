@@ -10,6 +10,7 @@ public:
     float m_speed;
     int m_frequency;
     float m_duration;
+    bool m_isPlaying;
 
     // Add class methods here
     UIWindow_ToolPanel(const char* p_title);

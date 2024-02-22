@@ -36,4 +36,6 @@ namespace GUI_Helper
     ImageData LoadImage(const char* filename);
 
     bool ImGui_imageButton(ImageData imageData);
+
+    void ImGui_picture(ImageData imageData);
 }

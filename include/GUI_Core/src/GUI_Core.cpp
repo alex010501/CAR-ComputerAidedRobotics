@@ -2,7 +2,7 @@
 
 CoreWindow::CoreWindow(const char *p_title, std::vector<UIWindow*> p_childWindows, const char* p_iconPath, int p_width, int p_height): m_title(p_title)
 {
-    if (p_iconPath)
+    /*if (p_iconPath)
     {
         int width, height, channels;
         unsigned char* iconData = stbi_load(p_iconPath, &width, &height, &channels, 0);
@@ -13,7 +13,8 @@ CoreWindow::CoreWindow(const char *p_title, std::vector<UIWindow*> p_childWindow
     else
     {
         this->m_icon = nullptr;
-    }
+    }*/
+    this->m_icon = nullptr;
     this->m_width = p_width;
     this->m_height = p_height;
     this->m_childWindows = p_childWindows;
@@ -109,11 +110,12 @@ void CoreWindow::update()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    ImGui::DockSpaceOverViewport(NULL, ImGuiDockNodeFlags_PassthruCentralNode);
+    ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
     for (UIWindow* window : this->m_childWindows)
     {
         window->draw();
     }
+    // ImGui::ShowDemoWindow();
     ImGui::Render();
     ImGui::UpdatePlatformWindows();
 
@@ -128,7 +130,7 @@ void CoreWindow::update()
     /* Swap front and back buffers */
     glfwSwapBuffers(this->m_window);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 void CoreWindow::shutdown()
