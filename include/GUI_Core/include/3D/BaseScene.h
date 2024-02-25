@@ -9,6 +9,7 @@
 
 #include <glm/glm.hpp>
 #include <stb_image.h>
+#include <assimp/Importer.hpp>
 
 class BaseScene
 {

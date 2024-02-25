@@ -26,14 +26,19 @@ add_subdirectory(extern/stb_image)
 ## glm - math ##
 add_subdirectory(extern/glm)
 
-# ## assimp - 3D model loading ##
-
-# set(ZLIB_LIBRARIES zlibstatic)
-# set(ENABLE_BOOST_WORKAROUND ON)
-# set(BUILD_STATIC_LIB ON)
-# set(BUILD_ASSIMP_TOOLS  ON)
-# set(ASSIMP_BUILD_STATIC_LIB ON)
-# add_subdirectory(extern/assimp)
+## assimp - 3D model loading ##
+set(BUILD_SHARED_LIBS FALSE CACHE BOOL "x" FORCE)
+set(ASSIMP_NO_EXPORT TRUE CACHE BOOL "x" FORCE)
+set(ASSIMP_BUILD_TESTS FALSE CACHE BOOL "x" FORCE)
+set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT FALSE CACHE BOOL "x" FORCE)
+set(ASSIMP_INSTALL_PDB FALSE CACHE BOOL "x" FORCE)
+set(ASSIMP_BUILD_ZLIB TRUE CACHE BOOL "x" FORCE)
+set(ASSIMP_BUILD_ASSIMP_TOOLS FALSE CACHE BOOL "x" FORCE)
+set(ASSIMP_BUILD_COLLADA_IMPORTER TRUE CACHE BOOL "x" FORCE)
+set(ASSIMP_BUILD_OBJ_IMPORTER TRUE CACHE BOOL "x" FORCE)
+set(ASSIMP_BUILD_FBX_IMPORTER TRUE CACHE BOOL "x" FORCE)
+set(ASSIMP_BUILD_BLEND_IMPORTER TRUE CACHE BOOL "x" FORCE)
+add_subdirectory(extern/assimp)
 
 # ## Bullet - physics ##
 # include_directories(extern/bullet/src)
@@ -70,5 +75,5 @@ file(GLOB_RECURSE GUI_Sources CONFIGURE_DEPENDS "include/*.h"
 add_library(GUI_Core ${GUI_Sources} ${imgui-source})
 
 # Link external libraries
-target_link_libraries(GUI_Core ${OPENGL_LIBRARIES} glad glfw stb_image glm) # assimp BulletDynamics BulletCollision LinearMath)
+target_link_libraries(GUI_Core ${OPENGL_LIBRARIES} glad glfw stb_image glm assimp) # BulletDynamics BulletCollision LinearMath)
 target_include_directories(GUI_Core PUBLIC ${imgui-directory})
