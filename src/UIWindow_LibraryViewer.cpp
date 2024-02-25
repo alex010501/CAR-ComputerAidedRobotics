@@ -5,11 +5,21 @@ UIWindow_LibraryViewer::UIWindow_LibraryViewer(const char* p_title): UIWindow(p_
 
 }
 
+void UIWindow_LibraryViewer::init()
+{
+    
+}
+
 void UIWindow_LibraryViewer::draw()
 {
-    UIWindow::draw();
+    ImGui::Begin(m_title);
     ImGui::Button("Library Viewer");
     ImGui::End();
+}
+
+void UIWindow_LibraryViewer::update()
+{
+    
 }
 
 void UIWindow_LibraryViewer::shutdown()

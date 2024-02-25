@@ -1,16 +1,16 @@
+# CMake version
 cmake_minimum_required(VERSION 3.13)
-
-# set the project name and version
+# Project name and version
 project(CAR VERSION 1.0)
 
-# specify the C++ standard
+# C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Set sources
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "include/*.h"
                                             "src/*.cpp")
-
+# Include directories for my libraries and headers
 include_directories(include/)                                         
 
 # include directories for my libraries

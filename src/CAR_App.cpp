@@ -16,9 +16,9 @@ int main()
 {
     std::vector<UIWindow*> windowList;
 
-    // Viewer3DWindow window1("Computer Aided Robotics");
-    // ToolPanelFile window2("File");
-    UIWindow_3DWorkSpace      window1("3d Workspace");
+    BaseScene scene = BaseScene();
+
+    UIWindow_3DWorkSpace      window1("3d Workspace", scene);
     UIWindow_Console          window2("Console");
     UIWindow_LibraryViewer    window3("Library");
     UIWindow_PropertiesViewer window4("Properties");

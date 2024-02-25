@@ -18,7 +18,13 @@ protected:
     const char* m_title;
 public:
     UIWindow(const char* p_title);
+
+    virtual ~UIWindow()
+    {}
+
+    virtual void init();
     virtual void draw();
+    virtual void update();
     virtual void shutdown();
 };
 

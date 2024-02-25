@@ -11,6 +11,8 @@ public:
 
     // Add class methods here
     UIWindow_Console(const char* p_title);
+    void init();
     void draw();
+    void update();
     void shutdown();
 };

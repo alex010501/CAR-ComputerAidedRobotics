@@ -6,9 +6,19 @@ UIWindow::UIWindow(const char* p_title): m_title(p_title)
     
 }
 
+void UIWindow::init()
+{
+    
+}
+
 void UIWindow::draw()
 {
-    ImGui::Begin(m_title);
+    
+}
+
+void UIWindow::update()
+{
+    
 }
 
 void UIWindow::shutdown()

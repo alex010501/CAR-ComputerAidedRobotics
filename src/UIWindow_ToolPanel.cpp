@@ -10,6 +10,11 @@ UIWindow_ToolPanel::UIWindow_ToolPanel(const char* p_title): UIWindow(p_title)
     this->m_isPlaying = false;
 }
 
+void UIWindow_ToolPanel::init()
+{
+    
+}
+
 void UIWindow_ToolPanel::draw()
 {   
     // Icons for the buttons
@@ -39,14 +44,7 @@ void UIWindow_ToolPanel::draw()
         Play_PauseIcon = GUI_Helper::LoadImage("resources\\Images\\Play.png");
     }
 
-    ImGui::Begin(m_title, nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-    // UIWindow::draw();
-    // ImGui::ShowMetricsWindow();
-
-    // if (ImGui::IsItemClicked(ImGui::ImageButton(NewFileIcon.texture, ImVec2(NewFileIcon.width, NewFileIcon.height))))
-    // {
-    //     std::cout << "New File" << std::endl;
-    // }
+    ImGui::Begin(m_title, nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 
     if (GUI_Helper::ImGui_imageButton(NewFileIcon))
     {
@@ -111,6 +109,11 @@ void UIWindow_ToolPanel::draw()
     if (GUI_Helper::ImGui_imageButton(StopIcon))
             this->m_isPlaying = false;
     ImGui::End();
+}
+
+void UIWindow_ToolPanel::update()
+{
+    
 }
 
 void UIWindow_ToolPanel::shutdown()
