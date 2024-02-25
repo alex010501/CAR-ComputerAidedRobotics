@@ -38,11 +38,17 @@ set(ASSIMP_BUILD_COLLADA_IMPORTER TRUE CACHE BOOL "x" FORCE)
 set(ASSIMP_BUILD_OBJ_IMPORTER TRUE CACHE BOOL "x" FORCE)
 set(ASSIMP_BUILD_FBX_IMPORTER TRUE CACHE BOOL "x" FORCE)
 set(ASSIMP_BUILD_BLEND_IMPORTER TRUE CACHE BOOL "x" FORCE)
+set(ASSIMP_BUILD_STL_IMPORTER TRUE CACHE BOOL "x" FORCE)
 add_subdirectory(extern/assimp)
 
 # ## Bullet - physics ##
+set(BULLET_VERSION 2.88)
 # include_directories(extern/bullet/src)
-# add_subdirectory(extern/bullet)
+add_subdirectory(extern/bullet/src/BulletCollision)
+add_subdirectory(extern/bullet/src/BulletDynamics)
+add_subdirectory(extern/bullet/src/BulletSoftBody)
+add_subdirectory(extern/bullet/src/BulletInverseDynamics)
+add_subdirectory(extern/bullet/src/LinearMath)
 
 ## ImGui - GUI ##
 set(imgui-directory extern/imgui)
@@ -75,5 +81,6 @@ file(GLOB_RECURSE GUI_Sources CONFIGURE_DEPENDS "include/*.h"
 add_library(GUI_Core ${GUI_Sources} ${imgui-source})
 
 # Link external libraries
-target_link_libraries(GUI_Core ${OPENGL_LIBRARIES} glad glfw stb_image glm assimp) # BulletDynamics BulletCollision LinearMath)
+target_link_libraries(GUI_Core ${OPENGL_LIBRARIES} glad glfw stb_image glm assimp BulletDynamics BulletCollision BulletSoftBody BulletInverseDynamics LinearMath)
 target_include_directories(GUI_Core PUBLIC ${imgui-directory})
+target_include_directories(GUI_Core PUBLIC extern/bullet/src)

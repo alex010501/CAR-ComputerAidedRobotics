@@ -10,6 +10,7 @@
 #include <glm/glm.hpp>
 #include <stb_image.h>
 #include <assimp/Importer.hpp>
+#include <BulletCollision/BroadphaseCollision/btDbvt.h>
 
 class BaseScene
 {
