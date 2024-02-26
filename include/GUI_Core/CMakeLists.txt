@@ -43,7 +43,7 @@ add_subdirectory(extern/assimp)
 
 # ## Bullet - physics ##
 set(BULLET_VERSION 2.88)
-# include_directories(extern/bullet/src)
+include_directories(extern/bullet/src)
 add_subdirectory(extern/bullet/src/BulletCollision)
 add_subdirectory(extern/bullet/src/BulletDynamics)
 add_subdirectory(extern/bullet/src/BulletSoftBody)
