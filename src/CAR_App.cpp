@@ -36,7 +36,7 @@ int main()
 
     
     
-    CoreWindow testWindow("Computer Aided Robotics", windowList, "resources\\Icons\\RA_Icon.png");
+    CoreWindow testWindow("Computer Aided Robotics", windowList, "resources/Icons/RA_Icon.png");
 
     // std::cout << "Welcome to Computer Aided Robotics" << std::endl;
     // getchar();

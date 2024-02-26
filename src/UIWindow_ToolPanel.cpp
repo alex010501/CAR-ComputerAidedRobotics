@@ -23,30 +23,30 @@ void UIWindow_ToolPanel::draw()
     static int selectedIndex = 0; // you need to store this state somewhere
 
     // Icons for the buttons
-    GUI_Helper::ImageData NewFileIcon   = GUI_Helper::LoadImage("resources\\Images\\New.png");
-    GUI_Helper::ImageData OpenFileIcon  = GUI_Helper::LoadImage("resources\\Images\\Open.png");
-    GUI_Helper::ImageData SaveIcon      = GUI_Helper::LoadImage("resources\\Images\\Save.png");
-    GUI_Helper::ImageData SaveAsIcon    = GUI_Helper::LoadImage("resources\\Images\\SaveAs.png");
-    GUI_Helper::ImageData UndoIcon      = GUI_Helper::LoadImage("resources\\Images\\Undo.png");
-    GUI_Helper::ImageData RedoIcon      = GUI_Helper::LoadImage("resources\\Images\\Redo.png");
-    GUI_Helper::ImageData CutIcon       = GUI_Helper::LoadImage("resources\\Images\\Cut.png");
-    GUI_Helper::ImageData CopyIcon      = GUI_Helper::LoadImage("resources\\Images\\Copy.png");
-    GUI_Helper::ImageData PasteIcon     = GUI_Helper::LoadImage("resources\\Images\\Paste.png");
+    GUI_Helper::ImageData NewFileIcon   = GUI_Helper::LoadImage("resources/Images/New.png");
+    GUI_Helper::ImageData OpenFileIcon  = GUI_Helper::LoadImage("resources/Images/Open.png");
+    GUI_Helper::ImageData SaveIcon      = GUI_Helper::LoadImage("resources/Images/Save.png");
+    GUI_Helper::ImageData SaveAsIcon    = GUI_Helper::LoadImage("resources/Images/SaveAs.png");
+    GUI_Helper::ImageData UndoIcon      = GUI_Helper::LoadImage("resources/Images/Undo.png");
+    GUI_Helper::ImageData RedoIcon      = GUI_Helper::LoadImage("resources/Images/Redo.png");
+    GUI_Helper::ImageData CutIcon       = GUI_Helper::LoadImage("resources/Images/Cut.png");
+    GUI_Helper::ImageData CopyIcon      = GUI_Helper::LoadImage("resources/Images/Copy.png");
+    GUI_Helper::ImageData PasteIcon     = GUI_Helper::LoadImage("resources/Images/Paste.png");
 
-    GUI_Helper::ImageData TimerIcon     = GUI_Helper::LoadImage("resources\\Images\\Timer.png");
-    GUI_Helper::ImageData FrequencyIcon = GUI_Helper::LoadImage("resources\\Images\\Frequency.png");
-    GUI_Helper::ImageData SpeedIcon     = GUI_Helper::LoadImage("resources\\Images\\Speed.png");
-    GUI_Helper::ImageData CalculateIcon = GUI_Helper::LoadImage("resources\\Images\\Calculate.png");
-    GUI_Helper::ImageData StopIcon      = GUI_Helper::LoadImage("resources\\Images\\Stop.png");
+    GUI_Helper::ImageData TimerIcon     = GUI_Helper::LoadImage("resources/Images/Timer.png");
+    GUI_Helper::ImageData FrequencyIcon = GUI_Helper::LoadImage("resources/Images/Frequency.png");
+    GUI_Helper::ImageData SpeedIcon     = GUI_Helper::LoadImage("resources/Images/Speed.png");
+    GUI_Helper::ImageData CalculateIcon = GUI_Helper::LoadImage("resources/Images/Calculate.png");
+    GUI_Helper::ImageData StopIcon      = GUI_Helper::LoadImage("resources/Images/Stop.png");
 
     GUI_Helper::ImageData Play_PauseIcon;
     if (this->m_isPlaying)
     {
-        Play_PauseIcon = GUI_Helper::LoadImage("resources\\Images\\Pause.png");
+        Play_PauseIcon = GUI_Helper::LoadImage("resources/Images/Pause.png");
     }
     else
     {
-        Play_PauseIcon = GUI_Helper::LoadImage("resources\\Images\\Play.png");
+        Play_PauseIcon = GUI_Helper::LoadImage("resources/Images/Play.png");
     }
 
     ImGui::Begin(m_title, nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);

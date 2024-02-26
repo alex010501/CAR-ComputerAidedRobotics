@@ -282,3 +282,65 @@ Eigen::VectorXd MathAdditions::BFGS(T target, int num_DOF, // Target value, numb
 
     return x;
 }
+
+void MathAdditions::Integrator::init(double p_initValue)
+{
+    this->IntegratorValue = p_initValue;    
+    for (int i = 0; i < 3; i++)
+    {
+        this->PrevValues[i] = 0;
+        this->isPrevValueSet[i] = false;
+    }
+}
+
+double MathAdditions::Integrator::calculate(double p_funcValue, double p_dt)
+{
+    if (!this->isPrevValueSet[0])
+    {
+        this->IntegratorValue = 6 * p_funcValue / 8 * p_dt + this->IntegratorValue;
+        this->isPrevValueSet[0] = true;
+        this->PrevValues[0] = p_funcValue;
+    }
+    else if (!this->isPrevValueSet[1])
+    {
+        this->IntegratorValue = (p_funcValue + 4.5 * this->PrevValues[0]) / 8 * p_dt + this->IntegratorValue;
+        this->isPrevValueSet[1] = true;
+        this->PrevValues[1] = this->PrevValues[0];
+        this->PrevValues[0] = p_funcValue;
+    }
+    else if (!this->isPrevValueSet[2])
+    {
+        this->IntegratorValue = (p_funcValue + 3 * this->PrevValues[0] + 3 * this->PrevValues[1]) / 8 * p_dt + this->IntegratorValue;
+        this->isPrevValueSet[2] = true;
+        this->PrevValues[2] = this->PrevValues[1];
+        this->PrevValues[1] = this->PrevValues[0];
+        this->PrevValues[0] = p_funcValue;
+    }
+    else
+    {
+        this->IntegratorValue = (p_funcValue + 3 * this->PrevValues[0] + 3 * this->PrevValues[1] + this->PrevValues[2]) / 8 * p_dt + this->IntegratorValue;
+        this->PrevValues[2] = this->PrevValues[1];
+        this->PrevValues[1] = this->PrevValues[0];
+        this->PrevValues[0] = p_funcValue;
+    }
+    return this->IntegratorValue;
+}
+
+void MathAdditions::Derivator::init()
+{
+    this->PrevValue = 0;
+}
+
+double MathAdditions::Derivator::calculate(double p_funcValue, double p_dt)
+{
+    // Calculate the intermediate values.
+    double k1 = (p_funcValue - this->PrevValue) / p_dt;
+    double k2 = (p_funcValue - (this->PrevValue + 0.5 * p_dt * k1)) / p_dt;
+    double k3 = (p_funcValue - (this->PrevValue + 0.5 * p_dt * k2)) / p_dt;
+    double k4 = (p_funcValue - (this->PrevValue + p_dt * k3)) / p_dt;
+
+    // Calculate the derivative.
+    double deriv = (k1 + 2 * k2 + 2 * k3 + k4) / 6;
+    this->PrevValue = p_funcValue;
+    return deriv;
+}

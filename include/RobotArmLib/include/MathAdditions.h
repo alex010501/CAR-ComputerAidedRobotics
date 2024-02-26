@@ -40,4 +40,24 @@ namespace MathAdditions
                          Eigen::VectorXd (*df)(forwardFunc<T>, Eigen::VectorXd q, T target),
                          Eigen::VectorXd x_init,
                          double eps = 1e-6, double alpha = 0.01, int max_iterations = 100);
+
+    class Integrator
+    {
+    private:
+        double IntegratorValue;
+        double PrevValues[3];
+        bool isPrevValueSet[3];
+    public:
+        void init(double p_initValue);
+        double calculate(double p_funcValue, double p_dt);
+    };
+
+    class Derivator
+    {
+    private:
+        double PrevValue;
+    public:
+        void init();
+        double calculate(double p_funcValue, double p_dt);
+    };
 }
