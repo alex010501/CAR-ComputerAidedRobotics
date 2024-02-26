@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <vector>
 #include <UIWindow_ToolPanel.h>
 
 UIWindow_ToolPanel::UIWindow_ToolPanel(const char* p_title): UIWindow(p_title)
@@ -16,7 +18,10 @@ void UIWindow_ToolPanel::init()
 }
 
 void UIWindow_ToolPanel::draw()
-{   
+{
+    std::vector items{25, 50, 100, 250, 500, 1000}; // defined somewhere
+    static int selectedIndex = 0; // you need to store this state somewhere
+
     // Icons for the buttons
     GUI_Helper::ImageData NewFileIcon   = GUI_Helper::LoadImage("resources\\Images\\New.png");
     GUI_Helper::ImageData OpenFileIcon  = GUI_Helper::LoadImage("resources\\Images\\Open.png");
@@ -77,30 +82,48 @@ void UIWindow_ToolPanel::draw()
     GUI_Helper::ImGui_imageButton(CopyIcon);
     ImGui::SameLine();
     GUI_Helper::ImGui_imageButton(PasteIcon);
-    ImGui::SameLine(0, 25);
+    ImGui::SameLine(0, 50);
 
+    ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 2));
     GUI_Helper::ImGui_picture(FrequencyIcon);
     ImGui::SameLine();
+    ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 5));
     ImGui::Text("Frequency");
     ImGui::SameLine();
-    ImGui::InputInt("Hz", &this->m_frequency);
-    ImGui::SameLine(0, 15);
-
+    ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 5));  
+    ImGui::PushItemWidth(60);
+    if (ImGui::BeginCombo("Hz", std::to_string(items[selectedIndex]).c_str()))
+    {
+        for (int i = 0; i < items.size(); ++i)
+        {
+            const bool isSelected = (selectedIndex == i);
+            if (ImGui::Selectable(std::to_string(items[i]).c_str(), isSelected))
+            {
+                selectedIndex = i;
+                this->m_frequency = items[i];
+            }
+            if (isSelected)
+            {
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
+    }
+    ImGui::PopItemWidth();
+    ImGui::SameLine(0, 25);
+    
+    ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 2));
     GUI_Helper::ImGui_picture(TimerIcon);
     ImGui::SameLine();
-    ImGui::Text("Duration");
+    ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 5));
+    ImGui::Text("Simulation time");
     ImGui::SameLine();
-    ImGui::InputFloat("sec", &this->m_duration);
-    ImGui::SameLine(0, 15);
-    GUI_Helper::ImGui_imageButton(CalculateIcon);
-    ImGui::SameLine(0, 30);
+    ImGui::PushItemWidth(50);
+    ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 5));
+    ImGui::InputFloat("sec", &this->m_duration, 0.0f, 0.0f, "%.1f");
+    ImGui::PopItemWidth();
+    ImGui::SameLine(0, 25);
 
-    GUI_Helper::ImGui_picture(SpeedIcon);
-    ImGui::SameLine();
-    ImGui::Text("Speed");
-    ImGui::SameLine();
-    ImGui::SliderFloat(" ", &this->m_speed, 0.1f, 5.0f);
-    ImGui::SameLine();
     if (GUI_Helper::ImGui_imageButton(Play_PauseIcon))
     {
         this->m_isPlaying = !this->m_isPlaying;
@@ -108,6 +131,10 @@ void UIWindow_ToolPanel::draw()
     ImGui::SameLine();
     if (GUI_Helper::ImGui_imageButton(StopIcon))
             this->m_isPlaying = false;
+
+    // Add Neural Network stuff here
+    
+    
     ImGui::End();
 }
 
