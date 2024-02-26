@@ -104,6 +104,8 @@ int CoreWindow::init()
         window->init();
     }
 
+    glfwMaximizeWindow(this->m_window);
+
     return 0;
 }
 
@@ -136,7 +138,7 @@ void CoreWindow::update()
         ImGui::DockBuilderAddNode(dockspace_id);
         ImGui::DockBuilderSetNodeSize(dockspace_id, ImGui::GetMainViewport()->Size);
 
-        ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Up, 0.1f, &dock_id_up, &dock_id_center);
+        ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Up, 0.065f, &dock_id_up, &dock_id_center);
         ImGui::DockBuilderSplitNode(dock_id_center, ImGuiDir_Right, 0.2f, &dock_id_right, &dock_id_center);
         ImGui::DockBuilderSplitNode(dock_id_center, ImGuiDir_Left, 0.25f, &dock_id_leftUp, &dock_id_center);
         ImGui::DockBuilderSplitNode(dock_id_center, ImGuiDir_Down, 0.2f, &dock_id_bottom, &dock_id_center);
