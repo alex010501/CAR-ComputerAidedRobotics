@@ -49,6 +49,9 @@ void UIWindow_ToolPanel::draw()
         Play_PauseIcon = GUI_Helper::LoadImage("resources/Images/Play.png");
     }
 
+    ImGuiWindowClass window_class;
+    window_class.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoTabBar;
+    ImGui::SetNextWindowClass(&window_class);
     ImGui::Begin(m_title, nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 
     if (GUI_Helper::ImGui_imageButton(NewFileIcon))

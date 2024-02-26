@@ -15,6 +15,9 @@ void UIWindow_3DWorkSpace::init()
 
 void UIWindow_3DWorkSpace::draw()
 {
+    ImGuiWindowClass window_class;
+    window_class.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoTabBar;
+    ImGui::SetNextWindowClass(&window_class);
     ImGui::Begin(m_title);
 
     // we access the ImGui window size
