@@ -124,6 +124,14 @@ void UIWindow_ToolPanel::draw()
     ImGui::PushItemWidth(50);
     ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 5));
     ImGui::InputFloat("sec", &this->m_duration, 0.0f, 0.0f, "%.1f");
+    if (this->m_duration < 0.1f)
+    {
+        this->m_duration = 0.1f;
+    }
+    else if (this->m_duration > 120.0f)
+    {
+        this->m_duration = 120.0f;
+    }
     ImGui::PopItemWidth();
     ImGui::SameLine(0, 25);
 
