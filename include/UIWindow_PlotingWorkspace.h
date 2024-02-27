@@ -1,10 +1,19 @@
 #pragma once
 
 #include <UI/UIWindow.h>
+#include <cmath>
+#include <vector>
+
+#include <MathAdditions.h>
 
 class UIWindow_PlotingWorkspace: public UIWindow {
 private:
-    
+    std::vector<double> x;
+    std::vector<double> y;
+    std::vector<double> y_deriv;
+    std::vector<double> y_integ;
+    MathAdditions::Derivator derivator;
+    MathAdditions::Integrator integrator;
 public:
     // Add variables here
 

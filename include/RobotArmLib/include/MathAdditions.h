@@ -45,8 +45,7 @@ namespace MathAdditions
     {
     private:
         double IntegratorValue;
-        double PrevValues[3];
-        bool isPrevValueSet[3];
+        double PrevValue;
     public:
         void init(double p_initValue);
         double calculate(double p_funcValue, double p_dt);

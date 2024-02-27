@@ -39,6 +39,7 @@ set(ASSIMP_BUILD_OBJ_IMPORTER TRUE CACHE BOOL "x" FORCE)
 set(ASSIMP_BUILD_FBX_IMPORTER TRUE CACHE BOOL "x" FORCE)
 set(ASSIMP_BUILD_BLEND_IMPORTER TRUE CACHE BOOL "x" FORCE)
 set(ASSIMP_BUILD_STL_IMPORTER TRUE CACHE BOOL "x" FORCE)
+set(ASSIMP_BUILD_IFC_IMPORTER TRUE CACHE BOOL "x" FORCE)
 add_subdirectory(extern/assimp)
 
 # ## Bullet - physics ##
@@ -63,6 +64,10 @@ set(imgui-source ${imgui-directory}/imconfig.h
                  ${imgui-directory}/imstb_truetype.h
                  ${imgui-directory}/imgui_tables.cpp
                  ${imgui-directory}/imgui_demo.cpp
+                 ${imgui-directory}/implot.h
+                 ${imgui-directory}/implot.cpp
+                 ${imgui-directory}/implot_internal.h
+                 ${imgui-directory}/implot_items.cpp
                  ${imgui-directory}/backends/imgui_impl_glfw.cpp
                  ${imgui-directory}/backends/imgui_impl_opengl3.cpp
 )
