@@ -17,7 +17,7 @@ void UIWindow_ToolPanel::init()
     
 }
 
-void UIWindow_ToolPanel::draw()
+void UIWindow_ToolPanel::draw(bool isSimulationMode)
 {
     std::vector items{25, 50, 100, 250, 500, 1000}; // defined somewhere
     static int selectedIndex = 0; // you need to store this state somewhere
@@ -149,7 +149,7 @@ void UIWindow_ToolPanel::draw()
     ImGui::End();
 }
 
-void UIWindow_ToolPanel::update()
+void UIWindow_ToolPanel::update(bool isSimulationMode)
 {
     
 }

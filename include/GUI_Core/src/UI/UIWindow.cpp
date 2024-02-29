@@ -11,12 +11,12 @@ void UIWindow::init()
     
 }
 
-void UIWindow::draw()
+void UIWindow::draw(bool isSimulationMode)
 {
     
 }
 
-void UIWindow::update()
+void UIWindow::update(bool isSimulationMode)
 {
     
 }

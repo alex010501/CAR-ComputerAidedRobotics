@@ -10,14 +10,14 @@ void UIWindow_Console::init()
     
 }
 
-void UIWindow_Console::draw()
+void UIWindow_Console::draw(bool isSimulationMode)
 {
     ImGui::Begin(m_title);
     ImGui::Button("Console");
     ImGui::End();
 }
 
-void UIWindow_Console::update()
+void UIWindow_Console::update(bool isSimulationMode)
 {
     
 }

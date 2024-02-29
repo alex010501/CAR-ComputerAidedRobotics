@@ -25,8 +25,8 @@ public:
     {}
 
     virtual void init();
-    virtual void draw();
-    virtual void update();
+    virtual void draw(bool isSimulationMode = false);
+    virtual void update(bool isSimulationMode = false);
     virtual void shutdown();
 };
 

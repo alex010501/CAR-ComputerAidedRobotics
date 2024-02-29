@@ -19,7 +19,7 @@ void UIWindow_PlotingWorkspace::init()
     }
 }
 
-void UIWindow_PlotingWorkspace::draw()
+void UIWindow_PlotingWorkspace::draw(bool isSimulationMode)
 {
     ImGui::Begin(m_title);
     if (ImPlot::BeginPlot("Example plot"))
@@ -34,7 +34,7 @@ void UIWindow_PlotingWorkspace::draw()
     ImGui::End();
 }
 
-void UIWindow_PlotingWorkspace::update()
+void UIWindow_PlotingWorkspace::update(bool isSimulationMode)
 {
     
 }

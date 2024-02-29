@@ -18,21 +18,21 @@ int main()
 
     BaseScene scene = BaseScene();
 
-    UIWindow_3DWorkSpace      window1("3d Workspace", scene);
-    UIWindow_Console          window2("Console");
-    UIWindow_LibraryViewer    window3("Library");
-    UIWindow_PropertiesViewer window4("Properties");
-    UIWindow_SceneTreeViewer  window5("Scene Tree");
-    UIWindow_ToolPanel        window6("Tools");
-    UIWindow_PlotingWorkspace window7("Plots");
+    UIWindow_3DWorkSpace      WorkspaceWindow("3d Workspace", scene);
+    UIWindow_Console          ConsoleWindow("Console");
+    UIWindow_LibraryViewer    LibraryWindow("Library");
+    UIWindow_PropertiesViewer PropertiesWindow("Properties");
+    UIWindow_SceneTreeViewer  SceneTreeWindow("Scene Tree");
+    UIWindow_ToolPanel        ToolPanel("Tools");
+    UIWindow_PlotingWorkspace PlotingWindow("Plots");
 
-    windowList.push_back(&window1);
-    windowList.push_back(&window2);    
-    windowList.push_back(&window3);
-    windowList.push_back(&window4);
-    windowList.push_back(&window5);
-    windowList.push_back(&window6);
-    windowList.push_back(&window7);
+    windowList.push_back(&WorkspaceWindow);
+    windowList.push_back(&ConsoleWindow);    
+    windowList.push_back(&LibraryWindow);
+    windowList.push_back(&PropertiesWindow);
+    windowList.push_back(&SceneTreeWindow);
+    windowList.push_back(&ToolPanel);
+    windowList.push_back(&PlotingWindow);
 
     
     

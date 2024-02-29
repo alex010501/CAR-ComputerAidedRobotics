@@ -533,7 +533,7 @@ if(EIGEN_TEST_SYCL)
   endif()
 endif()
 
-add_subdirectory(unsupported)
+# add_subdirectory(unsupported)
 
 add_subdirectory(demos EXCLUDE_FROM_ALL)
 

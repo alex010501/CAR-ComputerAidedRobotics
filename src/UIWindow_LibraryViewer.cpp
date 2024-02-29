@@ -10,14 +10,14 @@ void UIWindow_LibraryViewer::init()
     
 }
 
-void UIWindow_LibraryViewer::draw()
+void UIWindow_LibraryViewer::draw(bool isSimulationMode)
 {
     ImGui::Begin(m_title);
     ImGui::Button("Library Viewer");
     ImGui::End();
 }
 
-void UIWindow_LibraryViewer::update()
+void UIWindow_LibraryViewer::update(bool isSimulationMode)
 {
     
 }
