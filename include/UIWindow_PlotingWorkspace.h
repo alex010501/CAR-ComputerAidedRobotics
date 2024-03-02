@@ -1,6 +1,8 @@
 #pragma once
 
+#include <GUI_Core.h>
 #include <UI/UIWindow.h>
+#include <UI/UIGraph.h>
 #include <cmath>
 #include <vector>
 

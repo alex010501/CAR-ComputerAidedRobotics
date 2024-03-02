@@ -51,6 +51,7 @@ int main()
         // Poll for and process events
         testWindow.pollEvents();
         testWindow.update();
+        // std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
     testWindow.shutdown();
     return 0;

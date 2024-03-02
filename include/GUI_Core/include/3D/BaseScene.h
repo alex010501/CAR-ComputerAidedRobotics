@@ -5,8 +5,6 @@
 #include <cstring>
 
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 #include <glm/glm.hpp>
 #include <stb_image.h>
 #include <assimp/Importer.hpp>
@@ -19,7 +17,7 @@ protected:
     GLuint shader_id;
 
     const char *vertex_shader_code = R"*(
-    #version 330
+    #version 460
 
     layout (location = 0) in vec3 pos;
 
@@ -30,7 +28,7 @@ protected:
     )*";
 
     const char *fragment_shader_code = R"*(
-    #version 330
+    #version 460
 
     out vec4 color;
 

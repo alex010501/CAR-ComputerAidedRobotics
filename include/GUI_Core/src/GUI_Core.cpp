@@ -98,15 +98,15 @@ int CoreWindow::init()
     ImGui::StyleColorsDark();
 
     ImGui_ImplGlfw_InitForOpenGL(this->m_window, true);
-    ImGui_ImplOpenGL3_Init("#version 330 core");
+    ImGui_ImplOpenGL3_Init("#version 460 core");
+
+    glfwMaximizeWindow(this->m_window);
 
     for (UIWindow* window : this->m_childWindows)
     {
         window->init();
     }
-
-    glfwMaximizeWindow(this->m_window);
-
+  
     return 0;
 }
 
@@ -123,62 +123,45 @@ void CoreWindow::PosCallback(int p_x, int p_y)
     this->update();
 }
 
+void CoreWindow::startFrame()
+{
+
+}
+
+void CoreWindow::endFrame()
+{
+    
+}
+
 void CoreWindow::update()
 {
     /* ImGui Frame */
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    ImGuiID dockspace_id = ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
-    static bool isInit = true;
-    ImGuiID dock_id_up, dock_id_right, dock_id_leftUp, dock_id_leftBottom, dock_id_center, dock_id_bottom;
-    if (isInit)
-    {
-        isInit = false;
-        ImGui::DockBuilderRemoveNode(dockspace_id);
-        ImGui::DockBuilderAddNode(dockspace_id);
-        ImGui::DockBuilderSetNodeSize(dockspace_id, ImGui::GetMainViewport()->Size);
-
-        ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Up, 0.05f, &dock_id_up, &dock_id_center);
-        ImGui::DockBuilderSplitNode(dock_id_center, ImGuiDir_Right, 0.2f, &dock_id_right, &dock_id_center);
-        ImGui::DockBuilderSplitNode(dock_id_center, ImGuiDir_Left, 0.25f, &dock_id_leftUp, &dock_id_center);
-        ImGui::DockBuilderSplitNode(dock_id_center, ImGuiDir_Down, 0.2f, &dock_id_bottom, &dock_id_center);
-        ImGui::DockBuilderSplitNode(dock_id_leftUp, ImGuiDir_Down, 0.6f, &dock_id_leftBottom, &dock_id_leftUp);
-
-        ImGui::DockBuilderDockWindow("Tools", dock_id_up);
-        ImGui::DockBuilderDockWindow("Scene Tree", dock_id_leftUp);
-        ImGui::DockBuilderDockWindow("Properties", dock_id_leftBottom);
-        ImGui::DockBuilderDockWindow("Plots", dock_id_right);
-        ImGui::DockBuilderDockWindow("3d Workspace", dock_id_center);
-        ImGui::DockBuilderDockWindow("Console", dock_id_bottom);        
-        ImGui::DockBuilderDockWindow("Library", dock_id_bottom);
-
-        ImGui::DockBuilderFinish(dockspace_id);
-    }
+    this->initDockspace();
     for (UIWindow* window : this->m_childWindows)
     {
         window->draw();
+        window->update();
     }
     // ImGui::ShowDemoWindow();
     ImGui::Render();
     ImGui::UpdatePlatformWindows();
 
-    /* Render here */
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClearColor(0.0f, 0.2f, 0.4f, 0.5f);
-
-    for (UIWindow* window : this->m_childWindows)
-    {
-        window->update();
-    }
+    this->setBackgroundColour();
     
     /* ImGui Render */
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     /* Swap front and back buffers */
     glfwSwapBuffers(this->m_window);
+}
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+void CoreWindow::setBackgroundColour(float p_red, float p_green, float p_blue, float p_alpha)
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(p_red, p_green, p_blue, p_alpha);
 }
 
 void CoreWindow::shutdown()
@@ -203,4 +186,66 @@ bool CoreWindow::isOpen()
 void CoreWindow::pollEvents()
 {
     glfwPollEvents();
+}
+
+
+bool GUI_Helper::LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
+{
+    // Load from file
+    int image_width = 0;
+    int image_height = 0;
+    unsigned char* image_data = stbi_load(filename, &image_width, &image_height, NULL, 4);
+    if (image_data == NULL)
+        return false;
+
+    // Create a OpenGL texture identifier
+    GLuint image_texture;
+    glGenTextures(1, &image_texture);
+    glBindTexture(GL_TEXTURE_2D, image_texture);
+
+    // Setup filtering parameters for display
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // This is required on WebGL for non power-of-two textures
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Same
+
+    // Upload pixels into texture
+#if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+#endif
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+    stbi_image_free(image_data);
+
+    *out_texture = image_texture;
+    *out_width = image_width;
+    *out_height = image_height;
+
+    return true;
+}
+
+GUI_Helper::ImageData GUI_Helper::LoadImage(const char* filename)
+{
+    int my_image_width = 0;
+    int my_image_height = 0;
+    GLuint my_image_texture = 0;
+    bool ret = LoadTextureFromFile(filename, &my_image_texture, &my_image_width, &my_image_height);
+    IM_ASSERT(ret);
+
+    GUI_Helper::ImageData imageData;
+    imageData.texture = (void*)(intptr_t)my_image_texture;
+    imageData.width = my_image_width;
+    imageData.height = my_image_height;
+
+    return imageData;
+}
+
+bool GUI_Helper::ImGui_imageButton(GUI_Helper::ImageData imageData)
+{
+    bool ret = ImGui::IsItemClicked(ImGui::ImageButton(imageData.texture, ImVec2(imageData.width, imageData.height)));
+    return ret;
+}
+
+void GUI_Helper::ImGui_picture(GUI_Helper::ImageData imageData)
+{
+    ImGui::Image(imageData.texture, ImVec2(imageData.width, imageData.height));
 }

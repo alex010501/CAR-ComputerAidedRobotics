@@ -10,7 +10,7 @@ void UIWindow_3DWorkSpace::init()
     m_scene.create_triangle();
     m_scene.create_shaders();
 
-    m_scene.create_framebuffer(800, 600);
+    m_scene.create_framebuffer(1600, 900);
 }
 
 void UIWindow_3DWorkSpace::draw(bool isSimulationMode)
@@ -34,7 +34,7 @@ void UIWindow_3DWorkSpace::draw(bool isSimulationMode)
     // and here we can add our created texture as image to ImGui
     // unfortunately we need to use the cast to void* or I didn't find another way tbh
     ImGui::GetWindowDrawList()->AddImage(
-        (void *)m_scene.texture_id,
+        (void*)(intptr_t)m_scene.texture_id,
         ImVec2(pos.x, pos.y),
         ImVec2(pos.x + window_width, pos.y + window_height),
         ImVec2(0, 1),

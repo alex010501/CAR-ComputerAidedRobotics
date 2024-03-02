@@ -56,22 +56,22 @@ void UIWindow_ToolPanel::draw(bool isSimulationMode)
 
     if (GUI_Helper::ImGui_imageButton(NewFileIcon))
     {
-        std::cout << "New File" << std::endl;
+        
     }
     ImGui::SameLine();
     if (GUI_Helper::ImGui_imageButton(OpenFileIcon))
     {
-        std::cout << "Open File" << std::endl;
+        
     }
     ImGui::SameLine();
     if (GUI_Helper::ImGui_imageButton(SaveIcon))
     {
-        std::cout << "Save File" << std::endl;
+
     }
     ImGui::SameLine();
     if (GUI_Helper::ImGui_imageButton(SaveAsIcon))
     {
-        std::cout << "Save File As" << std::endl;
+
     }
     ImGui::SameLine(0, 25);
 
