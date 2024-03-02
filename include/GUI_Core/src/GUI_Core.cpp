@@ -1,10 +1,9 @@
 #include <GUI_Core.h>
 
-CoreWindow::CoreWindow(const char *p_title, std::vector<UIWindow*> p_childWindows, const char* p_iconPath, int p_width, int p_height): m_title(p_title), m_iconPath(p_iconPath)
+CoreWindow::CoreWindow(const char *p_title, const char* p_iconPath, int p_width, int p_height): m_title(p_title), m_iconPath(p_iconPath)
 {
     this->m_width = p_width;
     this->m_height = p_height;
-    this->m_childWindows = p_childWindows;
 }
 
 int CoreWindow::init()
@@ -60,23 +59,6 @@ int CoreWindow::init()
     {
         glfwSetWindowIcon(this->m_window, 0, NULL);
     }
-    
-    
-    // Set GLFW window user pointer
-    glfwSetWindowUserPointer(this->m_window, this);
-    
-    // Set GLFW callbacks
-    auto CoreWindowResizeCallback = [](GLFWwindow* p_window, int p_width, int p_height)
-    {
-        static_cast<CoreWindow*>(glfwGetWindowUserPointer(p_window))->ResizeCallback(p_width, p_height);
-    };
-    glfwSetWindowSizeCallback(this->m_window, CoreWindowResizeCallback);
-
-    auto CoreWindowPosCallback = [](GLFWwindow* p_window, int p_x, int p_y)
-    {
-        static_cast<CoreWindow*>(glfwGetWindowUserPointer(p_window))->PosCallback(p_x, p_y);
-    };
-    glfwSetWindowPosCallback(this->m_window, CoreWindowPosCallback);
 
     glfwMakeContextCurrent(this->m_window);
     glfwSwapInterval(1); // Enable vsync
@@ -101,12 +83,9 @@ int CoreWindow::init()
     ImGui_ImplOpenGL3_Init("#version 460 core");
 
     glfwMaximizeWindow(this->m_window);
+    
+    this->initChildWindows();
 
-    for (UIWindow* window : this->m_childWindows)
-    {
-        window->init();
-    }
-  
     return 0;
 }
 
@@ -123,57 +102,69 @@ void CoreWindow::PosCallback(int p_x, int p_y)
     this->update();
 }
 
-void CoreWindow::startFrame()
+void CoreWindow::setCallbacks()
 {
-
-}
-
-void CoreWindow::endFrame()
-{
+    // Set GLFW window user pointer
+    glfwSetWindowUserPointer(this->m_window, this);
     
+    // Set GLFW callbacks
+    auto CoreWindowResizeCallback = [](GLFWwindow* p_window, int p_width, int p_height)
+    {
+        static_cast<CoreWindow*>(glfwGetWindowUserPointer(p_window))->ResizeCallback(p_width, p_height);
+    };
+    glfwSetWindowSizeCallback(this->m_window, CoreWindowResizeCallback);
+
+    auto CoreWindowPosCallback = [](GLFWwindow* p_window, int p_x, int p_y)
+    {
+        static_cast<CoreWindow*>(glfwGetWindowUserPointer(p_window))->PosCallback(p_x, p_y);
+    };
+    glfwSetWindowPosCallback(this->m_window, CoreWindowPosCallback);
 }
 
 void CoreWindow::update()
 {
-    /* ImGui Frame */
+    // Start ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+
+    // Dockspace settings
     this->initDockspace();
-    for (UIWindow* window : this->m_childWindows)
-    {
-        window->draw();
-        window->update();
-    }
-    // ImGui::ShowDemoWindow();
+
+    // Render subwindows
+    this->showChildWindows();
+
+    // Prepare ImGui data for rendering
     ImGui::Render();
     ImGui::UpdatePlatformWindows();
 
-    this->setBackgroundColour();
-    
-    /* ImGui Render */
+    // OpenGL render
+    this->OpenGLRender();
+
+    // Child windows information update
+    this->updateChildWindows();
+
+    // ImGui-OpenGL render
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-    /* Swap front and back buffers */
+    
+    // Swap front and back buffers
     glfwSwapBuffers(this->m_window);
-}
-
-void CoreWindow::setBackgroundColour(float p_red, float p_green, float p_blue, float p_alpha)
-{
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClearColor(p_red, p_green, p_blue, p_alpha);
 }
 
 void CoreWindow::shutdown()
 {
-    for (UIWindow* window : this->m_childWindows)
-    {
-        window->shutdown();
-    }
+    // Shutdown child windows
+    this->shutdownChildWindows();
+
+    // ImGui backend shutdown
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
+
+    // Imgui shutdown
     ImGui::DestroyContext();
     ImPlot::DestroyContext();
+
+    // GLFW shutdown
     glfwDestroyWindow(this->m_window);
     glfwTerminate();
 }
@@ -189,6 +180,7 @@ void CoreWindow::pollEvents()
 }
 
 
+// Addition helper functions
 bool GUI_Helper::LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
 {
     // Load from file
@@ -228,7 +220,7 @@ GUI_Helper::ImageData GUI_Helper::LoadImage(const char* filename)
     int my_image_width = 0;
     int my_image_height = 0;
     GLuint my_image_texture = 0;
-    bool ret = LoadTextureFromFile(filename, &my_image_texture, &my_image_width, &my_image_height);
+    bool ret = GUI_Helper::LoadTextureFromFile(filename, &my_image_texture, &my_image_width, &my_image_height);
     IM_ASSERT(ret);
 
     GUI_Helper::ImageData imageData;

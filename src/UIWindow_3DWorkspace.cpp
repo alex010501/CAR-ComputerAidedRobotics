@@ -1,16 +1,19 @@
 #include <UIWindow_3DWorkspace.h>
 
-UIWindow_3DWorkSpace::UIWindow_3DWorkSpace(const char* p_title, BaseScene p_scene): UIWindow(p_title)
+UIWindow_3DWorkSpace::UIWindow_3DWorkSpace(const char* p_title): UIWindow(p_title)
+{}
+
+void UIWindow_3DWorkSpace::loadScene(BaseScene* p_scene)
 {
-    this->m_scene = p_scene;
+    m_scene = p_scene;
 }
 
 void UIWindow_3DWorkSpace::init()
 {
-    m_scene.create_triangle();
-    m_scene.create_shaders();
+    m_scene->create_triangle();
+    m_scene->create_shaders();
 
-    m_scene.create_framebuffer(1600, 900);
+    m_scene->create_framebuffer(1600, 900);
 }
 
 void UIWindow_3DWorkSpace::draw(bool isSimulationMode)
@@ -25,7 +28,7 @@ void UIWindow_3DWorkSpace::draw(bool isSimulationMode)
     const float window_height = ImGui::GetContentRegionAvail().y;
 
     // we rescale the framebuffer to the actual window size here and reset the glViewport
-    m_scene.rescale_framebuffer(window_width, window_height);
+    m_scene->rescale_framebuffer(window_width, window_height);
     glViewport(0, 0, window_width, window_height);
 
     // we get the screen position of the window
@@ -34,7 +37,7 @@ void UIWindow_3DWorkSpace::draw(bool isSimulationMode)
     // and here we can add our created texture as image to ImGui
     // unfortunately we need to use the cast to void* or I didn't find another way tbh
     ImGui::GetWindowDrawList()->AddImage(
-        (void*)(intptr_t)m_scene.texture_id,
+        (void*)(intptr_t)m_scene->texture_id,
         ImVec2(pos.x, pos.y),
         ImVec2(pos.x + window_width, pos.y + window_height),
         ImVec2(0, 1),
@@ -45,11 +48,11 @@ void UIWindow_3DWorkSpace::draw(bool isSimulationMode)
 
 void UIWindow_3DWorkSpace::update(bool isSimulationMode)
 {
-    m_scene.bind_framebuffer();
+    m_scene->bind_framebuffer();
 
-    m_scene.render_framebuffer();
+    m_scene->render_framebuffer();
 
-    m_scene.unbind_framebuffer();
+    m_scene->unbind_framebuffer();
 }
 
 void UIWindow_3DWorkSpace::shutdown()

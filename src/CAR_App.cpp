@@ -4,6 +4,7 @@
 #include <GUI_Core.h>
 
 // Classes
+#include <CAR_MainWindow.h>
 #include <UIWindow_3DWorkspace.h>
 #include <UIWindow_Console.h>
 #include <UIWindow_LibraryViewer.h>
@@ -14,32 +15,7 @@
 
 int main()
 {
-    std::vector<UIWindow*> windowList;
-
-    BaseScene scene = BaseScene();
-
-    UIWindow_3DWorkSpace      WorkspaceWindow("3d Workspace", scene);
-    UIWindow_Console          ConsoleWindow("Console");
-    UIWindow_LibraryViewer    LibraryWindow("Library");
-    UIWindow_PropertiesViewer PropertiesWindow("Properties");
-    UIWindow_SceneTreeViewer  SceneTreeWindow("Scene Tree");
-    UIWindow_ToolPanel        ToolPanel("Tools");
-    UIWindow_PlotingWorkspace PlotingWindow("Plots");
-
-    windowList.push_back(&WorkspaceWindow);
-    windowList.push_back(&ConsoleWindow);    
-    windowList.push_back(&LibraryWindow);
-    windowList.push_back(&PropertiesWindow);
-    windowList.push_back(&SceneTreeWindow);
-    windowList.push_back(&ToolPanel);
-    windowList.push_back(&PlotingWindow);
-
-    
-    
-    CoreWindow testWindow("Computer Aided Robotics", windowList, "resources/Icons/RA_Icon.png");
-
-    // std::cout << "Welcome to Computer Aided Robotics" << std::endl;
-    // getchar();
+    CAR_MainWindow testWindow("Computer Aided Robotics", "resources/Icons/RA_Icon.png");
 
     if (testWindow.init())
     {
