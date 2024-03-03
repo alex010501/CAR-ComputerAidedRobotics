@@ -17,18 +17,5 @@ int main()
 {
     CAR_MainWindow testWindow("Computer Aided Robotics", "resources/Icons/RA_Icon.png");
 
-    if (testWindow.init())
-    {
-        std::cout << "Error initializing window" << std::endl;
-        return 1;
-    }
-    while (testWindow.isOpen())
-    {
-        // Poll for and process events
-        testWindow.pollEvents();
-        testWindow.update();
-        // std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-    testWindow.shutdown();
-    return 0;
+    return testWindow.run();
 }

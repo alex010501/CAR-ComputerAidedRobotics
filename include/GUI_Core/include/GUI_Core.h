@@ -21,6 +21,8 @@
 
 #include <UI/UIWindow.h>
 
+#include <EventHandler/sigslot.h>
+
 class CoreWindow {
 private:
     GLFWwindow* m_window;
@@ -35,7 +37,7 @@ protected:
 
     virtual void initChildWindows(){};
 
-    virtual void showChildWindows(){};
+    virtual void drawChildWindows(){};
 
     virtual void updateChildWindows(){};
 
@@ -52,7 +54,9 @@ protected:
 public:
     CoreWindow(const char* p_title, const char* p_iconPath = nullptr, int p_width = 1280, int p_height = 720);
 
-    virtual int init();
+    int init();
+
+    void draw();
 
     void update();
 

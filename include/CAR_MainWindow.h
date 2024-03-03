@@ -1,5 +1,9 @@
 #pragma once
 
+#include <iostream>
+#include <thread>
+#include <chrono>
+
 #include <GUI_Core.h>
 #include <UI/UIGraph.h>
 
@@ -37,7 +41,7 @@ private:
 
     void OpenGLRender();
 
-    void showChildWindows();
+    void drawChildWindows();
 
     void updateChildWindows();
 
@@ -46,4 +50,6 @@ private:
 public:
     // Public methods
     CAR_MainWindow(const char* p_title, const char* p_iconPath = nullptr, int p_width = 1280, int p_height = 720);
+
+    int run();
 };

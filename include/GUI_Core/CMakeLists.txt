@@ -75,6 +75,7 @@ set(imgui-source ${imgui-directory}/imconfig.h
 # Set 'GUI_Source' variable 
 file(GLOB_RECURSE GUI_Sources CONFIGURE_DEPENDS "include/*.h"
                                                 "src/*.cpp"
+                                                "include/EventHandler/*.h"
                                                 "include/2D/*.h"
                                                 "src/2D/*.cpp"
                                                 "include/UI/*.h"

@@ -14,7 +14,9 @@ private:
 public:
     const char* m_label;
     std::vector<double> m_data;
-    Graph(const char* p_label, double* p_current_value);
+    
+    Graph(const char* p_label, double* p_current_value): m_label(p_label), m_current_value(p_current_value){}
+
     void update();
 };
 

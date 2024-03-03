@@ -121,7 +121,7 @@ void CoreWindow::setCallbacks()
     glfwSetWindowPosCallback(this->m_window, CoreWindowPosCallback);
 }
 
-void CoreWindow::update()
+void CoreWindow::draw()
 {
     // Start ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
@@ -132,7 +132,7 @@ void CoreWindow::update()
     this->initDockspace();
 
     // Render subwindows
-    this->showChildWindows();
+    this->drawChildWindows();
 
     // Prepare ImGui data for rendering
     ImGui::Render();
@@ -141,14 +141,17 @@ void CoreWindow::update()
     // OpenGL render
     this->OpenGLRender();
 
-    // Child windows information update
-    this->updateChildWindows();
-
     // ImGui-OpenGL render
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     
     // Swap front and back buffers
     glfwSwapBuffers(this->m_window);
+}
+
+void CoreWindow::update()
+{
+    // Child windows information update
+    this->updateChildWindows();
 }
 
 void CoreWindow::shutdown()
@@ -165,6 +168,7 @@ void CoreWindow::shutdown()
     ImPlot::DestroyContext();
 
     // GLFW shutdown
+    stbi_image_free(this->m_icon[0].pixels);
     glfwDestroyWindow(this->m_window);
     glfwTerminate();
 }

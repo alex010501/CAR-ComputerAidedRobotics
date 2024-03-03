@@ -3,6 +3,34 @@
 CAR_MainWindow::CAR_MainWindow(const char* p_title, const char* p_iconPath, int p_width, int p_height):
                                                     CoreWindow(p_title, p_iconPath, p_width, p_height){}
 
+
+int CAR_MainWindow::run()
+{
+    if (this->init())
+    {
+        std::cout << "Error initializing window" << std::endl;
+        return 1;
+    }
+    while (this->isOpen())
+    {
+        // Poll for and process events
+        this->pollEvents();
+        this->draw();
+        this->update();
+    }
+    this->shutdown();
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
 void CAR_MainWindow::OpenGLRender()
 {
     // Set background color
@@ -46,7 +74,7 @@ void CAR_MainWindow::shutdownChildWindows()
         window->shutdown();
 }
 
-void CAR_MainWindow::showChildWindows()
+void CAR_MainWindow::drawChildWindows()
 {
     for(UIWindow* window : this->m_UIWindows)
         window->draw();
