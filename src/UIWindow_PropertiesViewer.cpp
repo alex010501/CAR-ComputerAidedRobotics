@@ -10,14 +10,14 @@ void UIWindow_PropertiesViewer::init()
     
 }
 
-void UIWindow_PropertiesViewer::draw(bool isSimulationMode)
+void UIWindow_PropertiesViewer::draw()
 {
     ImGui::Begin(m_title);
     ImGui::Button("Properties Viewer");
     ImGui::End();
 }
 
-void UIWindow_PropertiesViewer::update(bool isSimulationMode)
+void UIWindow_PropertiesViewer::update()
 {
     
 }

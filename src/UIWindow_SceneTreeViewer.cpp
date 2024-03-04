@@ -10,14 +10,14 @@ void UIWindow_SceneTreeViewer::init()
     
 }
 
-void UIWindow_SceneTreeViewer::draw(bool isSimulationMode)
+void UIWindow_SceneTreeViewer::draw()
 {
     ImGui::Begin(m_title);
     ImGui::Button("Scene Tree Viewer");
     ImGui::End();
 }
 
-void UIWindow_SceneTreeViewer::update(bool isSimulationMode)
+void UIWindow_SceneTreeViewer::update()
 {
     
 }

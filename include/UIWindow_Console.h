@@ -18,8 +18,8 @@ public:
     // Add class methods here
     UIWindow_Console(const char* p_title);
     void init();
-    void draw(bool isSimulationMode = false);
-    void update(bool isSimulationMode = false);
+    void draw();
+    void update();
     void shutdown();
     void error_callback(int error, const char* description);
 };

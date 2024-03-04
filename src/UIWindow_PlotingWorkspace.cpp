@@ -10,14 +10,14 @@ void UIWindow_PlotingWorkspace::init()
 
 }
 
-void UIWindow_PlotingWorkspace::draw(bool isSimulationMode)
+void UIWindow_PlotingWorkspace::draw()
 {
     ImGui::Begin(m_title);
     
     ImGui::End();
 }
 
-void UIWindow_PlotingWorkspace::update(bool isSimulationMode)
+void UIWindow_PlotingWorkspace::update()
 {
     
 }

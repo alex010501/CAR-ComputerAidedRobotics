@@ -16,7 +16,7 @@ void UIWindow_3DWorkSpace::init()
     m_scene->create_framebuffer(1600, 900);
 }
 
-void UIWindow_3DWorkSpace::draw(bool isSimulationMode)
+void UIWindow_3DWorkSpace::draw()
 {
     ImGuiWindowClass window_class;
     window_class.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoTabBar;
@@ -46,7 +46,7 @@ void UIWindow_3DWorkSpace::draw(bool isSimulationMode)
     ImGui::End();
 }
 
-void UIWindow_3DWorkSpace::update(bool isSimulationMode)
+void UIWindow_3DWorkSpace::update()
 {
     m_scene->bind_framebuffer();
 

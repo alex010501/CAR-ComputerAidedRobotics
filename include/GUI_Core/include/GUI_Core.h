@@ -23,7 +23,7 @@
 
 #include <EventHandler/sigslot.h>
 
-class CoreWindow {
+class CoreWindow: public sigslot::has_slots<> {
 private:
     GLFWwindow* m_window;
     GLFWimage* m_icon;

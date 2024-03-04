@@ -1,7 +1,17 @@
 #include <CAR_MainWindow.h>
 
 CAR_MainWindow::CAR_MainWindow(const char* p_title, const char* p_iconPath, int p_width, int p_height):
-                                                    CoreWindow(p_title, p_iconPath, p_width, p_height){}
+                CoreWindow(p_title, p_iconPath, p_width, p_height),
+                WorkspaceWindow("3d Workspace"),
+                ConsoleWindow("Console"),
+                LibraryWindow("Library"),
+                PropertiesWindow("Properties"),
+                SceneTreeWindow("Scene Tree"),
+                ToolPanel("Tools"),
+                PlotingWindow("Plots")
+{
+    
+}
 
 
 int CAR_MainWindow::run()
@@ -44,28 +54,22 @@ void CAR_MainWindow::OpenGLRender()
 
 void CAR_MainWindow::initChildWindows()
 {
-    static UIWindow_3DWorkSpace      WorkspaceWindow("3d Workspace");
-    static UIWindow_Console          ConsoleWindow("Console");
-    static UIWindow_LibraryViewer    LibraryWindow("Library");
-    static UIWindow_PropertiesViewer PropertiesWindow("Properties");
-    static UIWindow_SceneTreeViewer  SceneTreeWindow("Scene Tree");
-    static UIWindow_ToolPanel        ToolPanel("Tools");
-    static UIWindow_PlotingWorkspace PlotingWindow("Plots");
 
     this->m_scene = BaseScene();
 
-    WorkspaceWindow.loadScene(&(this->m_scene));
+    this->WorkspaceWindow.loadScene(&(this->m_scene));
 
-    this->m_UIWindows.push_back(&WorkspaceWindow);
-    this->m_UIWindows.push_back(&ConsoleWindow);
-    this->m_UIWindows.push_back(&LibraryWindow);
-    this->m_UIWindows.push_back(&PropertiesWindow);
-    this->m_UIWindows.push_back(&SceneTreeWindow);
-    this->m_UIWindows.push_back(&ToolPanel);
-    this->m_UIWindows.push_back(&PlotingWindow);    
+    this->m_UIWindows = {&this->WorkspaceWindow, &this->ConsoleWindow, &this->LibraryWindow, &this->PropertiesWindow, &this->SceneTreeWindow, &this->ToolPanel, &this->PlotingWindow};    
         
     for(UIWindow* window : this->m_UIWindows)
         window->init();
+
+    this->ToolPanel.eventSave.connect(this, &CAR_MainWindow::saveScene);
+}
+
+void CAR_MainWindow::saveScene()
+{
+    std::cout << "Save scene in main window" << std::endl;
 }
 
 void CAR_MainWindow::shutdownChildWindows()

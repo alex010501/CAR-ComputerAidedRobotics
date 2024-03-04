@@ -6,10 +6,12 @@
 UIWindow_ToolPanel::UIWindow_ToolPanel(const char* p_title): UIWindow(p_title)
 {
     // Math variables
-    this->m_speed = 1.0f;
-    this->m_frequency = 100;
+    this->m_state = SIM_STOP;
+    this->m_frequency = 25;
     this->m_duration = 10;
     this->m_isPlaying = false;
+    this->m_frequencyItems = {25, 50, 100, 250, 500, 1000};
+    this->m_frequencyIndex = 0;
 }
 
 void UIWindow_ToolPanel::init()
@@ -17,93 +19,112 @@ void UIWindow_ToolPanel::init()
     
 }
 
-void UIWindow_ToolPanel::draw(bool isSimulationMode)
+void UIWindow_ToolPanel::loadIcons()
 {
-    std::vector items{25, 50, 100, 250, 500, 1000}; // defined somewhere
-    static int selectedIndex = 0; // you need to store this state somewhere
+    this->NewFileIcon   = GUI_Helper::LoadImage("resources/Images/New.png");
+    this->OpenFileIcon  = GUI_Helper::LoadImage("resources/Images/Open.png");
+    this->SaveIcon      = GUI_Helper::LoadImage("resources/Images/Save.png");
+    this->SaveAsIcon    = GUI_Helper::LoadImage("resources/Images/SaveAs.png");
+    this->UndoIcon      = GUI_Helper::LoadImage("resources/Images/Undo.png");
+    this->RedoIcon      = GUI_Helper::LoadImage("resources/Images/Redo.png");
+    this->CutIcon       = GUI_Helper::LoadImage("resources/Images/Cut.png");
+    this->CopyIcon      = GUI_Helper::LoadImage("resources/Images/Copy.png");
+    this->PasteIcon     = GUI_Helper::LoadImage("resources/Images/Paste.png");
+    this->TimerIcon     = GUI_Helper::LoadImage("resources/Images/Timer.png");
+    this->FrequencyIcon = GUI_Helper::LoadImage("resources/Images/Frequency.png");
+    this->SpeedIcon     = GUI_Helper::LoadImage("resources/Images/Speed.png");
+    this->CalculateIcon = GUI_Helper::LoadImage("resources/Images/Calculate.png");
+    this->StopIcon      = GUI_Helper::LoadImage("resources/Images/Stop.png");
 
-    // Icons for the buttons
-    GUI_Helper::ImageData NewFileIcon   = GUI_Helper::LoadImage("resources/Images/New.png");
-    GUI_Helper::ImageData OpenFileIcon  = GUI_Helper::LoadImage("resources/Images/Open.png");
-    GUI_Helper::ImageData SaveIcon      = GUI_Helper::LoadImage("resources/Images/Save.png");
-    GUI_Helper::ImageData SaveAsIcon    = GUI_Helper::LoadImage("resources/Images/SaveAs.png");
-    GUI_Helper::ImageData UndoIcon      = GUI_Helper::LoadImage("resources/Images/Undo.png");
-    GUI_Helper::ImageData RedoIcon      = GUI_Helper::LoadImage("resources/Images/Redo.png");
-    GUI_Helper::ImageData CutIcon       = GUI_Helper::LoadImage("resources/Images/Cut.png");
-    GUI_Helper::ImageData CopyIcon      = GUI_Helper::LoadImage("resources/Images/Copy.png");
-    GUI_Helper::ImageData PasteIcon     = GUI_Helper::LoadImage("resources/Images/Paste.png");
-
-    GUI_Helper::ImageData TimerIcon     = GUI_Helper::LoadImage("resources/Images/Timer.png");
-    GUI_Helper::ImageData FrequencyIcon = GUI_Helper::LoadImage("resources/Images/Frequency.png");
-    GUI_Helper::ImageData SpeedIcon     = GUI_Helper::LoadImage("resources/Images/Speed.png");
-    GUI_Helper::ImageData CalculateIcon = GUI_Helper::LoadImage("resources/Images/Calculate.png");
-    GUI_Helper::ImageData StopIcon      = GUI_Helper::LoadImage("resources/Images/Stop.png");
-
-    GUI_Helper::ImageData Play_PauseIcon;
-    if (this->m_isPlaying)
+    switch (this->m_state)
     {
-        Play_PauseIcon = GUI_Helper::LoadImage("resources/Images/Pause.png");
+        case SIM_STOP:
+            this->Play_PauseIcon = GUI_Helper::LoadImage("resources/Images/Play.png");
+            break;
+        case SIM_PAUSE:
+            this->Play_PauseIcon = GUI_Helper::LoadImage("resources/Images/Play.png");
+            break;
+        case SIM_PLAY:
+            this->Play_PauseIcon = GUI_Helper::LoadImage("resources/Images/Pause.png");
+            break;
+        default:
+            break;
     }
-    else
-    {
-        Play_PauseIcon = GUI_Helper::LoadImage("resources/Images/Play.png");
-    }
+}
 
-    ImGuiWindowClass window_class;
-    window_class.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoTabBar;
-    ImGui::SetNextWindowClass(&window_class);
-    ImGui::Begin(m_title, nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-
-    if (GUI_Helper::ImGui_imageButton(NewFileIcon))
+void UIWindow_ToolPanel::fileButtons()
+{
+    if (GUI_Helper::ImGui_imageButton(this->NewFileIcon))
     {
-        
+        std::cout << "New file" << std::endl;
     }
     ImGui::SameLine();
-    if (GUI_Helper::ImGui_imageButton(OpenFileIcon))
+    if (GUI_Helper::ImGui_imageButton(this->OpenFileIcon))
     {
-        
+        std::cout << "Open file" << std::endl;
     }
     ImGui::SameLine();
-    if (GUI_Helper::ImGui_imageButton(SaveIcon))
+    if (GUI_Helper::ImGui_imageButton(this->SaveIcon))
     {
-
+        std::cout << "Save file" << std::endl;
+        this->eventSave();
     }
     ImGui::SameLine();
-    if (GUI_Helper::ImGui_imageButton(SaveAsIcon))
+    if (GUI_Helper::ImGui_imageButton(this->SaveAsIcon))
     {
-
+        std::cout << "Save file as" << std::endl;
     }
     ImGui::SameLine(0, 25);
 
-    GUI_Helper::ImGui_imageButton(UndoIcon);
+    if (GUI_Helper::ImGui_imageButton(this->UndoIcon))
+    {
+        std::cout << "Undo" << std::endl;
+    }
     ImGui::SameLine();
-    GUI_Helper::ImGui_imageButton(RedoIcon);
+    if (GUI_Helper::ImGui_imageButton(this->RedoIcon))
+    {
+        std::cout << "Redo" << std::endl;
+    }
     ImGui::SameLine(0, 25);
 
-    GUI_Helper::ImGui_imageButton(CutIcon);
+    if (GUI_Helper::ImGui_imageButton(this->CutIcon))
+    {
+        std::cout << "Cut" << std::endl;
+    }
     ImGui::SameLine();
-    GUI_Helper::ImGui_imageButton(CopyIcon);
+    if (GUI_Helper::ImGui_imageButton(this->CopyIcon))
+    {
+        std::cout << "Copy" << std::endl;
+    }
     ImGui::SameLine();
-    GUI_Helper::ImGui_imageButton(PasteIcon);
-    ImGui::SameLine(0, 50);
+    if (GUI_Helper::ImGui_imageButton(this->PasteIcon))
+    {
+        std::cout << "Paste" << std::endl;
+    }
+}
 
+void UIWindow_ToolPanel::frequency_durationInput()
+{
     ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 2));
-    GUI_Helper::ImGui_picture(FrequencyIcon);
+    GUI_Helper::ImGui_picture(this->FrequencyIcon);
     ImGui::SameLine();
+
     ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 5));
     ImGui::Text("Frequency");
     ImGui::SameLine();
+
     ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 5));  
     ImGui::PushItemWidth(60);
-    if (ImGui::BeginCombo("Hz", std::to_string(items[selectedIndex]).c_str()))
+    if (ImGui::BeginCombo("Hz", std::to_string(this->m_frequencyItems[this->m_frequencyIndex]).c_str()))
     {
-        for (int i = 0; i < items.size(); ++i)
+        for (int i = 0; i < this->m_frequencyItems.size(); ++i)
         {
-            const bool isSelected = (selectedIndex == i);
-            if (ImGui::Selectable(std::to_string(items[i]).c_str(), isSelected))
+            const bool isSelected = (this->m_frequencyIndex == i);
+            if (ImGui::Selectable(std::to_string(this->m_frequencyItems[i]).c_str(), isSelected))
             {
-                selectedIndex = i;
-                this->m_frequency = items[i];
+                this->m_frequencyIndex = i;
+                std::cout << "Selected frequency: " << this->m_frequencyItems[i] << std::endl;
+                // this->m_frequency = this->m_frequencyItems[i];
             }
             if (isSelected)
             {
@@ -116,14 +137,17 @@ void UIWindow_ToolPanel::draw(bool isSimulationMode)
     ImGui::SameLine(0, 25);
     
     ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 2));
-    GUI_Helper::ImGui_picture(TimerIcon);
+    GUI_Helper::ImGui_picture(this->TimerIcon);
     ImGui::SameLine();
+
     ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 5));
     ImGui::Text("Simulation time");
     ImGui::SameLine();
+
     ImGui::PushItemWidth(50);
     ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 5));
     ImGui::InputFloat("sec", &this->m_duration, 0.0f, 0.0f, "%.1f");
+    // Check that the duration is between 0.1 and 120.
     if (this->m_duration < 0.1f)
     {
         this->m_duration = 0.1f;
@@ -132,16 +156,55 @@ void UIWindow_ToolPanel::draw(bool isSimulationMode)
     {
         this->m_duration = 120.0f;
     }
+
     ImGui::PopItemWidth();
+}
+
+void UIWindow_ToolPanel::playButtons()
+{
+    if (GUI_Helper::ImGui_imageButton(this->Play_PauseIcon))
+        switch (this->m_state)
+        {
+            case SIM_STOP:
+                this->m_state = SIM_PLAY;
+                break;
+            case SIM_PLAY:
+                this->m_state = SIM_PAUSE;
+                break;
+            case SIM_PAUSE:
+                this->m_state = SIM_PLAY;
+                break;
+            default:
+                break;
+        }
+
+    ImGui::SameLine();
+    if (GUI_Helper::ImGui_imageButton(this->StopIcon))
+            this->m_state = SIM_STOP;
+}
+
+void UIWindow_ToolPanel::draw()
+{
+    // Icons for the buttons
+    this->loadIcons();
+
+    // Set the window without the title bar
+    ImGuiWindowClass window_class;
+    window_class.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoTabBar;
+    ImGui::SetNextWindowClass(&window_class);
+
+    ImGui::Begin(m_title, nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+
+    // File, undo/redo, copy/paste buttons
+    this->fileButtons();
+    ImGui::SameLine(0, 50);
+
+    // Frequency and duration input
+    this->frequency_durationInput();
     ImGui::SameLine(0, 25);
 
-    if (GUI_Helper::ImGui_imageButton(Play_PauseIcon))
-    {
-        this->m_isPlaying = !this->m_isPlaying;
-    }
-    ImGui::SameLine();
-    if (GUI_Helper::ImGui_imageButton(StopIcon))
-            this->m_isPlaying = false;
+    // Play/Pause/Stop buttons
+    this->playButtons();
 
     // Add Neural Network stuff here
     
@@ -149,7 +212,7 @@ void UIWindow_ToolPanel::draw(bool isSimulationMode)
     ImGui::End();
 }
 
-void UIWindow_ToolPanel::update(bool isSimulationMode)
+void UIWindow_ToolPanel::update()
 {
     
 }

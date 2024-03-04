@@ -10,7 +10,7 @@ void UIWindow_Console::init()
     this->m_commandBuffer[0] = '\0';
 }
 
-void UIWindow_Console::draw(bool isSimulationMode)
+void UIWindow_Console::draw()
 {
     ImGui::Begin(m_title);
 
@@ -28,7 +28,7 @@ void UIWindow_Console::comandCallback()
     this->m_commandBuffer[0] = '\0';
 }
 
-void UIWindow_Console::update(bool isSimulationMode)
+void UIWindow_Console::update()
 {
     
 }

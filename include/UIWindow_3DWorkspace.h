@@ -16,7 +16,7 @@ public:
     UIWindow_3DWorkSpace(const char* p_title);
     void init();
     void loadScene(BaseScene* p_scene);
-    void draw(bool isSimulationMode = false);
-    void update(bool isSimulationMode = false);
+    void draw();
+    void update();
     void shutdown();
 };
