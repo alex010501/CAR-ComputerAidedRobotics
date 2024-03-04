@@ -7,9 +7,7 @@ UIWindow_ToolPanel::UIWindow_ToolPanel(const char* p_title): UIWindow(p_title)
 {
     // Math variables
     this->m_state = SIM_STOP;
-    this->m_frequency = 25;
     this->m_duration = 10;
-    this->m_isPlaying = false;
     this->m_frequencyItems = {25, 50, 100, 250, 500, 1000};
     this->m_frequencyIndex = 0;
 }
@@ -56,50 +54,49 @@ void UIWindow_ToolPanel::fileButtons()
 {
     if (GUI_Helper::ImGui_imageButton(this->NewFileIcon))
     {
-        std::cout << "New file" << std::endl;
+        this->signal_NewFile();
     }
     ImGui::SameLine();
     if (GUI_Helper::ImGui_imageButton(this->OpenFileIcon))
     {
-        std::cout << "Open file" << std::endl;
+        this->signal_OpenFile();
     }
     ImGui::SameLine();
     if (GUI_Helper::ImGui_imageButton(this->SaveIcon))
     {
-        std::cout << "Save file" << std::endl;
-        this->eventSave();
+        this->signal_Save();
     }
     ImGui::SameLine();
     if (GUI_Helper::ImGui_imageButton(this->SaveAsIcon))
     {
-        std::cout << "Save file as" << std::endl;
+        this->signal_SaveAs();
     }
     ImGui::SameLine(0, 25);
 
     if (GUI_Helper::ImGui_imageButton(this->UndoIcon))
     {
-        std::cout << "Undo" << std::endl;
+        this->signal_Undo();
     }
     ImGui::SameLine();
     if (GUI_Helper::ImGui_imageButton(this->RedoIcon))
     {
-        std::cout << "Redo" << std::endl;
+        this->signal_Redo();
     }
     ImGui::SameLine(0, 25);
 
     if (GUI_Helper::ImGui_imageButton(this->CutIcon))
     {
-        std::cout << "Cut" << std::endl;
+        this->signal_Cut();
     }
     ImGui::SameLine();
     if (GUI_Helper::ImGui_imageButton(this->CopyIcon))
     {
-        std::cout << "Copy" << std::endl;
+        this->signal_Copy();
     }
     ImGui::SameLine();
     if (GUI_Helper::ImGui_imageButton(this->PasteIcon))
     {
-        std::cout << "Paste" << std::endl;
+        this->signal_Paste();
     }
 }
 
@@ -165,14 +162,13 @@ void UIWindow_ToolPanel::playButtons()
     if (GUI_Helper::ImGui_imageButton(this->Play_PauseIcon))
         switch (this->m_state)
         {
-            case SIM_STOP:
+            case SIM_STOP: case SIM_PAUSE:
                 this->m_state = SIM_PLAY;
+                this->signal_Play(this->m_frequencyItems[this->m_frequencyIndex], this->m_duration);
                 break;
             case SIM_PLAY:
                 this->m_state = SIM_PAUSE;
-                break;
-            case SIM_PAUSE:
-                this->m_state = SIM_PLAY;
+                this->signal_Pause();
                 break;
             default:
                 break;
@@ -180,7 +176,10 @@ void UIWindow_ToolPanel::playButtons()
 
     ImGui::SameLine();
     if (GUI_Helper::ImGui_imageButton(this->StopIcon))
-            this->m_state = SIM_STOP;
+    {
+        this->m_state = SIM_STOP;
+        this->signal_Stop();
+    }
 }
 
 void UIWindow_ToolPanel::draw()

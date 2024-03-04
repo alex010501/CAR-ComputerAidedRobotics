@@ -8,14 +8,11 @@
 class UIWindow_ToolPanel: public UIWindow {
 
 private:
-
-    // Event handlers
-    // slot m_eventHandler;
-
     // Variables
     simState m_state;
     std::vector<int> m_frequencyItems;
     int m_frequencyIndex;
+    float m_duration;
 
     // Icons
     GUI_Helper::ImageData NewFileIcon;
@@ -42,12 +39,18 @@ private:
 
 public:
     // Event senders
-    sigslot::signal0<> eventSave;
-
-    // Add variables here
-    int m_frequency;
-    float m_duration;
-    bool m_isPlaying;
+    sigslot::signal0<> signal_NewFile;
+    sigslot::signal0<> signal_OpenFile;
+    sigslot::signal0<> signal_Save;
+    sigslot::signal0<> signal_SaveAs;
+    sigslot::signal0<> signal_Undo;
+    sigslot::signal0<> signal_Redo;
+    sigslot::signal0<> signal_Cut;
+    sigslot::signal0<> signal_Copy;
+    sigslot::signal0<> signal_Paste;
+    sigslot::signal2<int, float> signal_Play;
+    sigslot::signal0<> signal_Pause;
+    sigslot::signal0<> signal_Stop;
 
     // Add class methods here
     UIWindow_ToolPanel(const char* p_title);
@@ -55,14 +58,4 @@ public:
     void draw();
     void update();
     void shutdown();
-
-    
-    /*void raiseEvent();
-
-    void onEvent();
-
-    void initEventHandler(Signal<const char*> p_eventSender)
-    {
-        m_eventHandler.init(p_eventSender, onEvent, this);
-    }*/
 };

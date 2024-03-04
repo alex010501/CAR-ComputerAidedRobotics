@@ -64,12 +64,78 @@ void CAR_MainWindow::initChildWindows()
     for(UIWindow* window : this->m_UIWindows)
         window->init();
 
-    this->ToolPanel.eventSave.connect(this, &CAR_MainWindow::saveScene);
+    this->ToolPanel.signal_NewFile.connect(this, &CAR_MainWindow::EventNewFile);
+    this->ToolPanel.signal_OpenFile.connect(this, &CAR_MainWindow::EventOpenFile);
+    this->ToolPanel.signal_Save.connect(this, &CAR_MainWindow::EventSave);
+    this->ToolPanel.signal_SaveAs.connect(this, &CAR_MainWindow::EventSaveAs);
+    this->ToolPanel.signal_Undo.connect(this, &CAR_MainWindow::EventUndo);
+    this->ToolPanel.signal_Redo.connect(this, &CAR_MainWindow::EventRedo);
+    this->ToolPanel.signal_Cut.connect(this, &CAR_MainWindow::EventCut);
+    this->ToolPanel.signal_Copy.connect(this, &CAR_MainWindow::EventCopy);
+    this->ToolPanel.signal_Paste.connect(this, &CAR_MainWindow::EventPaste);
+    this->ToolPanel.signal_Play.connect(this, &CAR_MainWindow::EventPlay);
+    this->ToolPanel.signal_Pause.connect(this, &CAR_MainWindow::EventPause);
+    this->ToolPanel.signal_Stop.connect(this, &CAR_MainWindow::EventStop);
 }
 
-void CAR_MainWindow::saveScene()
+void CAR_MainWindow::EventNewFile()
 {
-    std::cout << "Save scene in main window" << std::endl;
+    std::cout << "New File" << std::endl;
+}
+
+void CAR_MainWindow::EventOpenFile()
+{
+    std::cout << "Open File" << std::endl;
+}
+
+void CAR_MainWindow::EventSave()
+{
+    std::cout << "EventSave" << std::endl;
+}
+
+void CAR_MainWindow::EventSaveAs()
+{
+    std::cout << "Save As" << std::endl;
+}
+
+void CAR_MainWindow::EventUndo()
+{
+    std::cout << "Undo" << std::endl;
+}
+
+void CAR_MainWindow::EventRedo()
+{
+    std::cout << "Redo" << std::endl;
+}
+
+void CAR_MainWindow::EventCut()
+{
+    std::cout << "Cut" << std::endl;
+}
+
+void CAR_MainWindow::EventCopy()
+{
+    std::cout << "Copy" << std::endl;
+}
+
+void CAR_MainWindow::EventPaste()
+{
+    std::cout << "Paste" << std::endl;
+}
+
+void CAR_MainWindow::EventPlay(int p_frequency, float p_duration)
+{
+    std::cout << "Play, frequency: " << p_frequency << ", duration: " << p_duration << std::endl;
+}
+
+void CAR_MainWindow::EventPause()
+{
+    std::cout << "Pause" << std::endl;
+}
+
+void CAR_MainWindow::EventStop()
+{
+    std::cout << "Stop" << std::endl;
 }
 
 void CAR_MainWindow::shutdownChildWindows()

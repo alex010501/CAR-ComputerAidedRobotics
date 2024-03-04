@@ -65,5 +65,20 @@ public:
 
     int run();
 
-    void saveScene();
+    // Events
+    void EventNewFile();
+    void EventOpenFile();
+    void EventSave();
+    void EventSaveAs();
+
+    void EventUndo();
+    void EventRedo();
+
+    void EventCut();
+    void EventCopy();
+    void EventPaste();
+
+    void EventPlay(int p_frequency, float p_duration);
+    void EventPause();
+    void EventStop();
 };
