@@ -3,6 +3,9 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <ctime>
+#include <sstream>
+#include <iomanip>
 
 #include <GUI_Core.h>
 #include <UI/UIGraph.h>
@@ -24,8 +27,6 @@ private:
 
     // Variables for simulation tracking
     simState m_simState;
-    bool m_isSimulating;
-    bool m_isPaused;
     unsigned int m_simFrequency;
     unsigned int m_simTickCount;
     unsigned int m_currentTick;
@@ -65,6 +66,9 @@ public:
 
     int run();
 
+    // Signals
+    sigslot::signal3<char, std::time_t, const char*> signal_console;
+
     // Events
     void EventNewFile();
     void EventOpenFile();
@@ -81,4 +85,6 @@ public:
     void EventPlay(int p_frequency, float p_duration);
     void EventPause();
     void EventStop();
+
+    void EventOnError(std::string p_error);
 };

@@ -120,8 +120,6 @@ void UIWindow_ToolPanel::frequency_durationInput()
             if (ImGui::Selectable(std::to_string(this->m_frequencyItems[i]).c_str(), isSelected))
             {
                 this->m_frequencyIndex = i;
-                std::cout << "Selected frequency: " << this->m_frequencyItems[i] << std::endl;
-                // this->m_frequency = this->m_frequencyItems[i];
             }
             if (isSelected)
             {

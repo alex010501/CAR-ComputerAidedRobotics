@@ -2,15 +2,25 @@
 
 #include <GUI_Core.h>
 #include <UI/UIWindow.h>
+
 #include <vector>
+#include <ctime>
+
+struct consoleMessage
+{
+    char color;
+    char message[256];
+};
 
 class UIWindow_Console: public UIWindow {
 private:
     // Add variables here
     char m_commandBuffer[256];
-    std::vector<char*> m_pLines;
+    std::vector<consoleMessage> m_consoleLines;
 
-    void comandCallback();    
+    // Private methods
+    void comandCallback();
+    void drawConsoleItem(char p_color, const char* p_message);
 public:
     // Add variables here
 
@@ -21,5 +31,5 @@ public:
     void draw();
     void update();
     void shutdown();
-    void error_callback(int error, const char* description);
+    void consoleCallback(char p_color, std::time_t p_time, const char* p_message);
 };
