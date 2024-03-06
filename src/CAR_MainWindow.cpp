@@ -77,6 +77,11 @@ void CAR_MainWindow::initChildWindows()
     this->ToolPanel.signal_Pause   .connect(this, &CAR_MainWindow::EventPause);
     this->ToolPanel.signal_Stop    .connect(this, &CAR_MainWindow::EventStop);
 
+    for (UIWindow* window : this->m_UIWindows)
+    {
+        window->signal_error.connect(this, &CAR_MainWindow::EventOnError);
+    }
+
     this->signal_console.connect(&(this->ConsoleWindow), &UIWindow_Console::consoleCallback);
 }
 
@@ -158,9 +163,10 @@ void CAR_MainWindow::EventStop()
     this->signal_console('b', std::time(nullptr), "Simulation stopped");
 }
 
-void CAR_MainWindow::EventOnError(std::string p_error)
+void CAR_MainWindow::EventOnError(int p_error, std::string p_description)
 {
-    this->signal_console('r', std::time(nullptr), p_error.c_str());
+    std::string lv_error_str = "Error #" + std::to_string(p_error) + ": " + p_description;
+    this->signal_console('r', std::time(nullptr), lv_error_str.c_str());
 }
 
 void CAR_MainWindow::shutdownChildWindows()

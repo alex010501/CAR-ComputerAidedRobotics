@@ -52,49 +52,51 @@ void UIWindow_ToolPanel::loadIcons()
 
 void UIWindow_ToolPanel::fileButtons()
 {
-    if (GUI_Helper::ImGui_imageButton(this->NewFileIcon))
+    bool lv_buttonEnabled = (this->m_state == SIM_STOP);
+
+    if (GUI_Helper::ImGui_imageButton(this->NewFileIcon, lv_buttonEnabled))
     {
         this->signal_NewFile();
     }
     ImGui::SameLine();
-    if (GUI_Helper::ImGui_imageButton(this->OpenFileIcon))
+    if (GUI_Helper::ImGui_imageButton(this->OpenFileIcon, lv_buttonEnabled))
     {
         this->signal_OpenFile();
     }
     ImGui::SameLine();
-    if (GUI_Helper::ImGui_imageButton(this->SaveIcon))
+    if (GUI_Helper::ImGui_imageButton(this->SaveIcon, lv_buttonEnabled))
     {
         this->signal_Save();
     }
     ImGui::SameLine();
-    if (GUI_Helper::ImGui_imageButton(this->SaveAsIcon))
+    if (GUI_Helper::ImGui_imageButton(this->SaveAsIcon, lv_buttonEnabled))
     {
         this->signal_SaveAs();
     }
     ImGui::SameLine(0, 25);
 
-    if (GUI_Helper::ImGui_imageButton(this->UndoIcon))
+    if (GUI_Helper::ImGui_imageButton(this->UndoIcon, lv_buttonEnabled))
     {
         this->signal_Undo();
     }
     ImGui::SameLine();
-    if (GUI_Helper::ImGui_imageButton(this->RedoIcon))
+    if (GUI_Helper::ImGui_imageButton(this->RedoIcon, lv_buttonEnabled))
     {
         this->signal_Redo();
     }
     ImGui::SameLine(0, 25);
 
-    if (GUI_Helper::ImGui_imageButton(this->CutIcon))
+    if (GUI_Helper::ImGui_imageButton(this->CutIcon, lv_buttonEnabled))
     {
         this->signal_Cut();
     }
     ImGui::SameLine();
-    if (GUI_Helper::ImGui_imageButton(this->CopyIcon))
+    if (GUI_Helper::ImGui_imageButton(this->CopyIcon, lv_buttonEnabled))
     {
         this->signal_Copy();
     }
     ImGui::SameLine();
-    if (GUI_Helper::ImGui_imageButton(this->PasteIcon))
+    if (GUI_Helper::ImGui_imageButton(this->PasteIcon, lv_buttonEnabled))
     {
         this->signal_Paste();
     }
@@ -102,6 +104,8 @@ void UIWindow_ToolPanel::fileButtons()
 
 void UIWindow_ToolPanel::frequency_durationInput()
 {
+    bool lv_inputEnabled = (this->m_state == SIM_STOP);
+
     ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 2));
     GUI_Helper::ImGui_picture(this->FrequencyIcon);
     ImGui::SameLine();
@@ -112,6 +116,7 @@ void UIWindow_ToolPanel::frequency_durationInput()
 
     ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 5));  
     ImGui::PushItemWidth(60);
+    ImGui::BeginDisabled(!lv_inputEnabled);
     if (ImGui::BeginCombo("Hz", std::to_string(this->m_frequencyItems[this->m_frequencyIndex]).c_str()))
     {
         for (int i = 0; i < this->m_frequencyItems.size(); ++i)
@@ -128,6 +133,7 @@ void UIWindow_ToolPanel::frequency_durationInput()
         }
         ImGui::EndCombo();
     }
+    ImGui::EndDisabled();
     ImGui::PopItemWidth();
     ImGui::SameLine(0, 25);
     
@@ -139,8 +145,9 @@ void UIWindow_ToolPanel::frequency_durationInput()
     ImGui::Text("Simulation time");
     ImGui::SameLine();
 
-    ImGui::PushItemWidth(50);
     ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 5));
+    ImGui::PushItemWidth(50);
+    ImGui::BeginDisabled(!lv_inputEnabled);
     ImGui::InputFloat("sec", &this->m_duration, 0.0f, 0.0f, "%.1f");
     // Check that the duration is between 0.1 and 120.
     if (this->m_duration < 0.1f)
@@ -151,13 +158,13 @@ void UIWindow_ToolPanel::frequency_durationInput()
     {
         this->m_duration = 120.0f;
     }
-
+    ImGui::EndDisabled();
     ImGui::PopItemWidth();
 }
 
 void UIWindow_ToolPanel::playButtons()
 {
-    if (GUI_Helper::ImGui_imageButton(this->Play_PauseIcon))
+    if (GUI_Helper::ImGui_imageButton(this->Play_PauseIcon, true))
         switch (this->m_state)
         {
             case SIM_STOP: case SIM_PAUSE:
@@ -173,7 +180,7 @@ void UIWindow_ToolPanel::playButtons()
         }
 
     ImGui::SameLine();
-    if (GUI_Helper::ImGui_imageButton(this->StopIcon))
+    if (GUI_Helper::ImGui_imageButton(this->StopIcon, true))
     {
         this->m_state = SIM_STOP;
         this->signal_Stop();

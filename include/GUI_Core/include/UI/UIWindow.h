@@ -12,7 +12,11 @@
 class UIWindow: public sigslot::has_slots<> {
 protected:
     const char* m_title;
+
+    void error_callback(int p_error, std::string p_description);
 public:
+    sigslot::signal2<int, std::string> signal_error;
+
     UIWindow(const char* p_title): m_title(p_title) {}
     ~UIWindow(){}
 
@@ -20,5 +24,4 @@ public:
     virtual void draw(){}
     virtual void update(){}
     virtual void shutdown(){}
-    virtual void error_callback(int error, const char* description){}
 };

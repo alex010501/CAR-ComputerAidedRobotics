@@ -86,5 +86,5 @@ public:
     void EventPause();
     void EventStop();
 
-    void EventOnError(std::string p_error);
+    void EventOnError(int p_error,std::string p_description);
 };

@@ -81,7 +81,7 @@ namespace GUI_Helper
 
     ImageData LoadImage(const char* filename);
 
-    bool ImGui_imageButton(ImageData imageData);
+    bool ImGui_imageButton(ImageData imageData, bool enabled);
 
     void ImGui_picture(ImageData imageData);
 };

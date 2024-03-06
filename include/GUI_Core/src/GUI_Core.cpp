@@ -235,9 +235,11 @@ GUI_Helper::ImageData GUI_Helper::LoadImage(const char* filename)
     return imageData;
 }
 
-bool GUI_Helper::ImGui_imageButton(GUI_Helper::ImageData imageData)
-{
+bool GUI_Helper::ImGui_imageButton(GUI_Helper::ImageData imageData, bool enabled)
+{   
+    ImGui::BeginDisabled(!enabled);
     bool ret = ImGui::IsItemClicked(ImGui::ImageButton(imageData.texture, ImVec2(imageData.width, imageData.height)));
+    ImGui::EndDisabled();
     return ret;
 }
 
