@@ -1,23 +1,47 @@
 #include <UIWindow_3DWorkspace.h>
 
-UIWindow_3DWorkSpace::UIWindow_3DWorkSpace(const char* p_title): UIWindow(p_title)
+UIWindow_3DWorkSpace::UIWindow_3DWorkSpace(const char* p_title):
+                      UIWindow(p_title),
+                      graph_Q1("Signal", &(this->q1)),
+                      graph_Q2("Derivative", &(this->q2)),
+                      graph_Q3("Integral", &(this->q3)),
+                      Q1(),
+                      Q2(),
+                      Q3()
 {}
 
 void UIWindow_3DWorkSpace::loadScene(BaseScene* p_scene)
 {
-    m_scene = p_scene;
+    this->m_scene = p_scene;
 }
 
 void UIWindow_3DWorkSpace::init()
 {
-    m_scene->create_triangle();
-    m_scene->create_shaders();
+    this->m_scene->create_triangle();
+    this->m_scene->create_shaders();
 
-    m_scene->create_framebuffer(1600, 900);
+    this->m_scene->create_framebuffer(1600, 900);
+
+    // this->Q1 = randSignal();
+    // this->Q2 = randSignal();
+    // this->Q3 = randSignal();
+
+    this->q1 = 0;
+    this->q2 = 0;
+    this->q3 = 0;
+
+    this->m_time = 0;
+    this->m_dt = 0;
 }
 
 void UIWindow_3DWorkSpace::draw()
 {
+    this->m_scene->bind_framebuffer();
+
+    this->m_scene->render_framebuffer();
+
+    this->m_scene->unbind_framebuffer();
+
     ImGuiWindowClass window_class;
     window_class.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoTabBar;
     ImGui::SetNextWindowClass(&window_class);
@@ -28,7 +52,7 @@ void UIWindow_3DWorkSpace::draw()
     const float window_height = ImGui::GetContentRegionAvail().y;
 
     // we rescale the framebuffer to the actual window size here and reset the glViewport
-    m_scene->rescale_framebuffer(window_width, window_height);
+    this->m_scene->rescale_framebuffer(window_width, window_height);
     glViewport(0, 0, window_width, window_height);
 
     // we get the screen position of the window
@@ -48,11 +72,36 @@ void UIWindow_3DWorkSpace::draw()
 
 void UIWindow_3DWorkSpace::update()
 {
-    m_scene->bind_framebuffer();
+    // this->q1 = this->Q1.get_signal(this->m_time);
+    this->q1 = sin(this->m_time);
+    std::cout << "f(" << this->m_time << ") = " << this->q1 << std::endl;
+    // this->q2 = this->Q2.get_signal(this->m_time);
+    // this->q3 = this->Q3.get_signal(this->m_time);
+    this->q2 = this->derivator.calculate(this->q1, this->m_dt);
+    this->q3 = this->integrator.calculate(this->q1, this->m_dt);
+    this->graph_Q1.update();
+    this->graph_Q2.update();
+    this->graph_Q3.update();
+    this->m_time += this->m_dt;
+}
 
-    m_scene->render_framebuffer();
+void UIWindow_3DWorkSpace::startSimulation(double p_dt, double p_duration)
+{
+    this->m_dt = p_dt;
+    this->m_time = 0;
 
-    m_scene->unbind_framebuffer();
+    this->derivator.init();
+    this->integrator.init(0);
+
+    this->signal_addGraph(&this->graph_Q1);
+    this->signal_addGraph(&this->graph_Q2);
+    this->signal_addGraph(&this->graph_Q3);
+}
+
+void UIWindow_3DWorkSpace::resetSimulation()
+{
+    // this->m_time = 0;
+    this->m_dt = 0;
 }
 
 void UIWindow_3DWorkSpace::shutdown()

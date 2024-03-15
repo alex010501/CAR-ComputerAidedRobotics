@@ -1,4 +1,6 @@
 #include <UIWindow_Console.h>
+#include <chrono>
+#include <iostream>
 
 UIWindow_Console::UIWindow_Console(const char* p_title): UIWindow(p_title)
 {
@@ -55,7 +57,7 @@ void UIWindow_Console::drawConsoleItem(char p_color, const char* p_message)
         case 'g':
             ImGui::TextColored(ImVec4(0, 1, 0, 1), "%s", p_message);
             break;
-        case 'b':
+        case 'w':
             ImGui::Text("%s", p_message);
             break;
         case 'y':
@@ -101,7 +103,7 @@ void UIWindow_Console::consoleCallback(char p_color, std::time_t p_time, const c
         case 'g':
             lv_buffer += "-[SUCCESS]-";
             break;
-        case 'b':
+        case 'w':
             lv_buffer += "-[INFO]-";
             break;
         case 'y':

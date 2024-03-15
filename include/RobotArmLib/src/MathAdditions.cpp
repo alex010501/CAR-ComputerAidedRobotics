@@ -283,6 +283,29 @@ Eigen::VectorXd MathAdditions::BFGS(T target, int num_DOF, // Target value, numb
     return x;
 }
 
+std::vector<double> MathAdditions::make_vector(double p_begin, double p_end, double p_step)
+{
+    std::vector<double> lv_vector;
+    lv_vector.reserve((p_end - p_begin) / p_step + 1);
+    while (p_begin <= p_end)
+    {
+        lv_vector.push_back(p_begin);
+        p_begin += p_step;
+    }
+    return lv_vector;
+}
+
+/*std::vector<double> MathAdditions::zero_vector(int p_size)
+{
+    std::vector<double> lv_vector;
+    lv_vector.reserve(p_size);
+    for (int i = 0; i < p_size; i++)
+    {
+        lv_vector.push_back(0.0);
+    }
+    return lv_vector;
+}*/
+
 void MathAdditions::Integrator::init(double p_initValue)
 {
     this->IntegratorValue = p_initValue;    
@@ -306,4 +329,54 @@ double MathAdditions::Derivator::calculate(double p_funcValue, double p_dt)
     double derivative = (p_funcValue - this->PrevValue) / p_dt;
     this->PrevValue = p_funcValue;
     return derivative;
+}
+
+MathAdditions::randSignal::randSignal()
+{
+    // Initialize random coefficients
+    this->a = this->getRand(-1.0, 1.0);
+    this->b = this->getRand(-0.5, 0.5);
+    this->c = this->getRand(-0.1, 0.1);
+    // Initialize random frequencies
+    int k1 = this->getRand(1, 5);
+    int k2 = this->getRand(5, 10);
+    int k3 = this->getRand(10, 20);
+    this->f1 = k1 * M_PI / 2;
+    this->f2 = k2 * M_PI / 2;
+    this->f3 = k3 * M_PI / 2;
+}
+
+template <typename T>
+T MathAdditions::randSignal::getRand(T lower_bound, T upper_bound)
+{
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+
+    if constexpr (std::is_integral_v<T>)
+    {
+        // For integral types (int, long, etc.)
+        std::uniform_int_distribution<T> dist(lower_bound, upper_bound);
+        return dist(gen);
+    }
+    else if constexpr (std::is_floating_point_v<T>)
+    {
+        // For floating-point types (float, double, etc.)
+        std::uniform_real_distribution<T> dist(lower_bound, upper_bound);
+        return dist(gen);
+    }
+    else
+    {
+        // Unsupported type
+        throw std::invalid_argument("Unsupported type for getRand");
+    }
+}
+
+double MathAdditions::randSignal::get_signal(double t)
+{
+    double firstHarmonic = this->a * sin(this->f1 * t);
+    double secondHarmonic = this->b * sin(this->f2 * t);
+    double thirdHarmonic = this->c * sin(this->f3 * t);
+    // std::cout << "Time " << t << std::endl;
+    // std::cout << firstHarmonic << " " << secondHarmonic << " " << thirdHarmonic << std::endl;
+    return firstHarmonic + secondHarmonic + thirdHarmonic;
 }

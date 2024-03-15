@@ -11,6 +11,27 @@ CAR_MainWindow::CAR_MainWindow(const char* p_title, const char* p_iconPath, int 
                 PlotingWindow("Plots")
 {
     this->m_simState = SIM_STOP;
+    this->m_simFrequency = 25;
+}
+
+void CAR_MainWindow::updateMethod()
+{
+    while(this->isOpen())
+    {
+        if (this->m_simState == SIM_PLAY)
+        {
+            this->upsTimer.start();
+            this->update();
+            this->m_currentTime += 1.0/this->m_simFrequency;
+            if (this-> m_currentTime >= this->m_simDuration)
+                this->EventStop();
+            this->upsTimer.wait();       
+        }
+        else
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        }       
+    }
 }
 
 
@@ -21,13 +42,23 @@ int CAR_MainWindow::run()
         std::cout << "Error initializing window" << std::endl;
         return 1;
     }
-    while (this->isOpen())
+
+    this->m_currentTime = 0.0;
+
+    std::thread updateThread(&CAR_MainWindow::updateMethod, this);   
+
+    this->fpsTimer.setFrequency(60);
+    this->fpsTimer.start();
+
+    while(this->isOpen())
     {
-        // Poll for and process events
         this->pollEvents();
         this->draw();
-        this->update();
-    }
+        this->fpsTimer.wait();
+    }   
+
+    updateThread.join();
+
     this->shutdown();
     return 0;
 }
@@ -83,11 +114,16 @@ void CAR_MainWindow::initChildWindows()
     }
 
     this->signal_console.connect(&(this->ConsoleWindow), &UIWindow_Console::consoleCallback);
+    this->signal_play.connect(&(this->WorkspaceWindow), &UIWindow_3DWorkSpace::startSimulation);
+    this->signal_play.connect(&(this->PlotingWindow), &UIWindow_PlotingWorkspace::startSimulation);
+    this->signal_stop.connect(&(this->WorkspaceWindow), &UIWindow_3DWorkSpace::resetSimulation);
+
+    this->WorkspaceWindow.signal_addGraph.connect(&(this->PlotingWindow), &UIWindow_PlotingWorkspace::addGraph);
 }
 
 void CAR_MainWindow::EventNewFile()
 {
-    this->signal_console('b', std::time(nullptr), "Created new file");
+    this->signal_console('w', std::time(nullptr), "Created new file");
 }
 
 void CAR_MainWindow::EventOpenFile()
@@ -107,52 +143,54 @@ void CAR_MainWindow::EventSaveAs()
 
 void CAR_MainWindow::EventUndo()
 {
-    this->signal_console('b', std::time(nullptr), "Undid action");
+    this->signal_console('w', std::time(nullptr), "Undid action");
 }
 
 void CAR_MainWindow::EventRedo()
 {
-    this->signal_console('b', std::time(nullptr), "Redid action");
+    this->signal_console('w', std::time(nullptr), "Redid action");
 }
 
 void CAR_MainWindow::EventCut()
 {
-    this->signal_console('b', std::time(nullptr), "Cut selection");
+    this->signal_console('w', std::time(nullptr), "Cut selection");
 }
 
 void CAR_MainWindow::EventCopy()
 {
-    this->signal_console('b', std::time(nullptr), "Copied selection");
+    this->signal_console('w', std::time(nullptr), "Copied selection");
 }
 
 void CAR_MainWindow::EventPaste()
 {
-    this->signal_console('b', std::time(nullptr), "Pasted selection");
+    this->signal_console('w', std::time(nullptr), "Pasted selection");
 }
 
 void CAR_MainWindow::EventPlay(int p_frequency, float p_duration)
 {
     if (this->m_simState == SIM_PAUSE)
-        this->signal_console('b', std::time(nullptr), "Resume simulation");
+        this->signal_console('w', std::time(nullptr), "Resume simulation");
     else
     {
         this->m_simFrequency = p_frequency;
-        this->m_simTickCount = p_duration * p_frequency;
+        this->upsTimer.setFrequency(this->m_simFrequency);
+        this->m_simDuration = p_duration;
+
+        this->signal_play( 1.0/this->m_simFrequency, p_duration);
 
         std::stringstream lv_stream;
         lv_stream << std::fixed << std::setprecision(1) << p_duration;
 
         std::string str = "Simulation started; Selected Frequency: " + std::to_string(p_frequency) + " Hz; Duration: " + lv_stream.str() + " s";
-        this->signal_console('b', std::time(nullptr), str.c_str());
+        this->signal_console('w', std::time(nullptr), str.c_str());
     }
-
     this->m_simState = SIM_PLAY;    
 }
 
 void CAR_MainWindow::EventPause()
 {
     this->m_simState = SIM_PAUSE;
-    this->signal_console('b', std::time(nullptr), "Simulation paused");
+    this->signal_console('w', std::time(nullptr), "Simulation paused");
 }
 
 void CAR_MainWindow::EventStop()
@@ -160,7 +198,10 @@ void CAR_MainWindow::EventStop()
     if (this->m_simState == SIM_STOP)
         return;    
     this->m_simState = SIM_STOP;
-    this->signal_console('b', std::time(nullptr), "Simulation stopped");
+    this->ToolPanel.m_state = SIM_STOP;
+    this->m_currentTime = 0.0;
+    this->signal_stop();
+    this->signal_console('w', std::time(nullptr), "Simulation stopped");
 }
 
 void CAR_MainWindow::EventOnError(int p_error, std::string p_description)

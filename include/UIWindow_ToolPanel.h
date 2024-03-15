@@ -9,7 +9,6 @@ class UIWindow_ToolPanel: public UIWindow {
 
 private:
     // Variables
-    simState m_state;
     std::vector<int> m_frequencyItems;
     int m_frequencyIndex;
     float m_duration;
@@ -38,6 +37,9 @@ private:
     void playButtons();
 
 public:
+    // Variables
+    simState m_state;
+    
     // Event senders
     sigslot::signal0<> signal_NewFile;
     sigslot::signal0<> signal_OpenFile;

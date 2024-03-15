@@ -93,13 +93,13 @@ void CoreWindow::ResizeCallback(int p_width, int p_height)
 {
     this->m_width = p_width;
     this->m_height = p_height;
-    this->update();
+    this->draw();
 }
 
 void CoreWindow::PosCallback(int p_x, int p_y)
 {
     glfwSetWindowPos(this->m_window, p_x, p_y);
-    this->update();
+    this->draw();
 }
 
 void CoreWindow::setCallbacks()

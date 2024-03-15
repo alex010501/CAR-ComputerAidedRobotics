@@ -19,17 +19,22 @@
 #include <UIWindow_ToolPanel.h>
 
 #include "SimState.h"
+#include "Timer.h"
 
 class CAR_MainWindow : public CoreWindow
 {
 private:
     /* Add variables below*/
 
+    // Timers
+    Timer fpsTimer;
+    Timer upsTimer;
+
     // Variables for simulation tracking
     simState m_simState;
-    unsigned int m_simFrequency;
-    unsigned int m_simTickCount;
-    unsigned int m_currentTick;
+    int m_simFrequency;
+    double m_simDuration;
+    double m_currentTime;
 
     // Variables for 3D workspace
     BaseScene m_scene;
@@ -60,6 +65,8 @@ private:
 
     void shutdownChildWindows();
 
+    void updateMethod();
+
 public:
     // Public methods
     CAR_MainWindow(const char* p_title, const char* p_iconPath = nullptr, int p_width = 1280, int p_height = 720);
@@ -68,6 +75,8 @@ public:
 
     // Signals
     sigslot::signal3<char, std::time_t, const char*> signal_console;
+    sigslot::signal2<double, double> signal_play;
+    sigslot::signal0<> signal_stop;
 
     // Events
     void EventNewFile();

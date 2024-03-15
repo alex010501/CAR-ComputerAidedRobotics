@@ -10,15 +10,16 @@
 
 class UIWindow_PlotingWorkspace: public UIWindow {
 private:
-    std::vector<double> x;
-    std::vector<double> y;
-    std::vector<double> y_deriv;
-    std::vector<double> y_integ;
-    MathAdditions::Derivator derivator;
-    MathAdditions::Integrator integrator;
-public:
     // Add variables here
 
+
+    // Add class methods here
+    void addOscilloscope(); 
+public:
+    // Add variables here
+    std::vector<Oscilloscope> m_plottingOscilloscope;
+
+    Oscilloscope exampleOsc = Oscilloscope("Example");
 
     // Add class methods here
     UIWindow_PlotingWorkspace(const char* p_title);
@@ -26,4 +27,8 @@ public:
     void draw();
     void update();
     void shutdown();
+
+    void startSimulation(double p_dt, double p_duration);
+
+    void addGraph(Graph* p_graph);
 };

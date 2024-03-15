@@ -6,7 +6,7 @@
 #include <sstream>
 #include <iostream>
 
-#include <glad/glad.h> // Подключаем glew для того, чтобы получить все необходимые заголовочные файлы OpenGL
+#include <glad/glad.h>
 
 class Shader
 {

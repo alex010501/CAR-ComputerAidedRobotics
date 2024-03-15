@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Eigen/Dense>
+#include <random>
 
 #define PI 3.141592653589793
 
@@ -41,6 +42,10 @@ namespace MathAdditions
                          Eigen::VectorXd x_init,
                          double eps = 1e-6, double alpha = 0.01, int max_iterations = 100);
 
+    std::vector<double> make_vector(double p_begin, double p_end, double p_step = 0.1);
+
+    // std::vector<double> zero_vector(int p_size);
+
     class Integrator
     {
     private:
@@ -58,5 +63,19 @@ namespace MathAdditions
     public:
         void init();
         double calculate(double p_funcValue, double p_dt);
+    };
+
+    class randSignal
+    {
+    private:
+        double a, b, c;
+        double f1, f2, f3;
+
+        template <typename T>
+        T getRand(T lower_bound, T upper_bound);
+
+    public:
+        randSignal();
+        double get_signal(double t);
     };
 }
