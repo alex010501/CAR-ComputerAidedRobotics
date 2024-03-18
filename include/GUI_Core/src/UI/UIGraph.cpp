@@ -49,25 +49,13 @@ void Oscilloscope::addPlot(Graph* p_plot)
 {
     Graph* temp = p_plot;
     m_plotList.push_back(p_plot);
-    // for (Graph* plot : this->m_plotList)
-    // {
-    //     printf("Plot: %s, pointer %d\n", plot->m_label.c_str(), plot);
-    // }
 }
 
 void Oscilloscope::show()
 {
     if (ImPlot::BeginPlot(this->m_label.c_str()))
     {
-        ImPlot::SetupAxes("Time", "Amplitude");
-        // ImAxis x = ImAxis_X1;
-        // x.AutoFitRange(this->m_x_data.data(), this->m_x_data.size());
-        // ImPlot::SetAxes()
-        /*if (this->isXAxisInit)
-        {
-            // ImPlot::SetupAxisLimits(ImAxis_X1, this->m_x_data[0], this->m_x_data[this->m_x_size - 1], ImPlotCond_Always);
-            ImPlot::SetupAxes("Time", "Amplitude");
-        }*/
+        ImPlot::SetupAxes("Time", "Amplitude", ImPlotAxisFlags_AutoFit, ImPlotAxisFlags_AutoFit);
 
         for (Graph* plot : this->m_plotList)
         {

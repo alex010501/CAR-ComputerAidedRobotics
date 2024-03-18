@@ -72,16 +72,10 @@ void UIWindow_3DWorkSpace::draw()
 
 void UIWindow_3DWorkSpace::update()
 {
-    // this->q1 = this->Q1.get_signal(this->m_time);
-    this->q1 = sin(this->m_time);
-    std::cout << "f(" << this->m_time << ") = " << this->q1 << std::endl;
-    // this->q2 = this->Q2.get_signal(this->m_time);
-    // this->q3 = this->Q3.get_signal(this->m_time);
+    this->q1 = this->Q1.get_signal(this->m_time);
     this->q2 = this->derivator.calculate(this->q1, this->m_dt);
     this->q3 = this->integrator.calculate(this->q1, this->m_dt);
-    this->graph_Q1.update();
-    this->graph_Q2.update();
-    this->graph_Q3.update();
+
     this->m_time += this->m_dt;
 }
 
