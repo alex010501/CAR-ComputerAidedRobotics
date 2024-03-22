@@ -81,7 +81,9 @@ file(GLOB_RECURSE GUI_Sources CONFIGURE_DEPENDS "include/*.h"
                                                 "include/UI/*.h"
                                                 "src/UI/*.cpp"
                                                 "include/3D/*.h"                                            
-                                                "src/3D/*.cpp")
+                                                "src/3D/*.cpp"
+                                                "include/ShadersBuffers/*.h"
+                                                "src/ShadersBuffers/*.cpp")
                                                 
 # Build GUI_Core library
 add_library(GUI_Core ${GUI_Sources} ${imgui-source})

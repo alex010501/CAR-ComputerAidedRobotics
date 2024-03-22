@@ -15,6 +15,14 @@ int CoreWindow::init()
         return 1;
     }
 
+    // Tell GLFW what version of OpenGL we are using 
+	// In this case we are using OpenGL 4.5
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+	// Tell GLFW we are using the CORE profile
+	// So that means we only have the modern functions
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     glfwWindowHint(GLFW_FOCUS_ON_SHOW, GLFW_TRUE);
    
     // Create GLFW window

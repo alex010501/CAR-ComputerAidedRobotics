@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ShadersBuffers/Shader.h>
 
 struct mesh
 {

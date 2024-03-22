@@ -10,6 +10,11 @@
 #include <assimp/Importer.hpp>
 #include <BulletCollision/BroadphaseCollision/btDbvt.h>
 
+#include <ShadersBuffers/Shader.h>
+#include <ShadersBuffers/VAO.h>
+#include <ShadersBuffers/VBO.h>
+#include <ShadersBuffers/EBO.h>
+
 class BaseScene
 {
 protected:
