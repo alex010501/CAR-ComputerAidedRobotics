@@ -26,6 +26,10 @@ add_subdirectory(extern/stb_image)
 ## glm - math ##
 add_subdirectory(extern/glm)
 
+## OpenSceneGraph - scene hierarchy ##
+# add_subdirectory(extern/OpenSceneGraph)
+# include_directories(extern/OpenSceneGraph/include)
+
 ## assimp - 3D model loading ##
 set(BUILD_SHARED_LIBS FALSE CACHE BOOL "x" FORCE)
 set(ASSIMP_NO_EXPORT TRUE CACHE BOOL "x" FORCE)
@@ -89,6 +93,11 @@ file(GLOB_RECURSE GUI_Sources CONFIGURE_DEPENDS "include/*.h"
 add_library(GUI_Core ${GUI_Sources} ${imgui-source})
 
 # Link external libraries
-target_link_libraries(GUI_Core ${OPENGL_LIBRARIES} glad glfw stb_image glm assimp BulletDynamics BulletCollision BulletSoftBody BulletInverseDynamics LinearMath)
+target_link_libraries(GUI_Core ${OPENGL_LIBRARIES} glad glfw stb_image glm assimp)
+target_link_libraries(GUI_Core BulletDynamics BulletCollision BulletSoftBody BulletInverseDynamics LinearMath)
+# target_link_libraries(GUI_Core osg osgViewer osgDB osgGA osgUtil osgText osgManipulator)
 target_include_directories(GUI_Core PUBLIC ${imgui-directory})
 target_include_directories(GUI_Core PUBLIC extern/bullet/src)
+# target_include_directories(GUI_Core PUBLIC extern/OpenSceneGraph/include)
+# target_include_directories(GUI_Core PUBLIC extern/OpenSceneGraph/src)
+# TARGET_INCLUDE_DIRECTORIES(GUI_Core PRIVATE $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/GUI_Core/extern/OpenSceneGraph/include>)

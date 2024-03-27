@@ -27,7 +27,8 @@ void UIWindow_Console::draw()
         this->drawConsoleItem(message.color, message.message);
     }
 
-    ImGui::SetScrollHereY(1.0f);
+    if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
+        ImGui::SetScrollHereY(1.0f);
 
     ImGui::EndChildFrame();
 
@@ -74,6 +75,8 @@ void UIWindow_Console::drawConsoleItem(char p_color, const char* p_message)
 
 void UIWindow_Console::comandCallback()
 {
+    if (this->m_commandBuffer[0] == '\0')
+        return;
     this->consoleCallback('c', std::time(0), this->m_commandBuffer);
     this->m_commandBuffer[0] = '\0';
 }
